@@ -32,8 +32,10 @@ impl Default for CpuSettings {
     }
 }
 
-impl CpuSettings {
-    pub fn new(cpu_config: &CpuConfig) -> Result<Self, WrongSettingsError> {
+impl TryFrom<&CpuConfig> for CpuSettings {
+    type Error = WrongSettingsError;
+
+    fn try_from(cpu_config: &CpuConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
         if let Some(cpu_check_enabled) = cpu_config.enabled
             && !cpu_check_enabled

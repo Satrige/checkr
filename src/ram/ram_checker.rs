@@ -15,7 +15,7 @@ pub struct RamChecker {
 
 impl RamChecker {
     pub fn new(ram_config: &RamConfig) -> anyhow::Result<Self> {
-        let settings = RamSettings::new(ram_config)?;
+        let settings = RamSettings::try_from(ram_config)?;
 
         Ok(RamChecker {
             settings,

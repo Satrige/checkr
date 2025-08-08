@@ -10,7 +10,7 @@ use crate::{
 };
 
 #[derive(Parser, Debug)]
-#[command(name = "chechr")]
+#[command(name = "checkr")]
 pub struct Args {
     #[arg(short, long, default_value = "config.json")]
     pub config: String,

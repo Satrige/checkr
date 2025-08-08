@@ -16,8 +16,10 @@ impl Default for RamSettings {
     }
 }
 
-impl RamSettings {
-    pub fn new(ram_config: &RamConfig) -> Result<Self, WrongSettingsError> {
+impl TryFrom<&RamConfig> for RamSettings {
+    type Error = WrongSettingsError;
+
+    fn try_from(ram_config: &RamConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
         if let Some(ram_check_enabled) = ram_config.enabled
             && !ram_check_enabled

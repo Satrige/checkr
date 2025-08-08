@@ -6,23 +6,24 @@ mod ram;
 
 mod config;
 mod helpers;
-mod logger;
 mod models;
 mod routes;
 
 use config::{AppConfig, Args};
-use logger::set_up_logger;
-
-use crate::{helpers::get_checkers::get_checkers, routes::HealthRouters};
+use helpers::get_checkers::get_checkers;
+use models::log_level::LogLevel;
+use routes::HealthRouters;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let config = AppConfig::from_file(&args.config)?;
 
-    set_up_logger(&config);
+    tracing_subscriber::fmt()
+        .with_max_level(config.log_level.as_ref().unwrap_or(&LogLevel::ERROR))
+        .init();
 
-    tracing::info!("Started chechr on port: {}", config.port);
+    tracing::info!("Started checkr on port: {}", config.port);
 
     let checkers = get_checkers(&config)?;
 
