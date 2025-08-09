@@ -30,24 +30,30 @@ impl RamChecker {
             .unwrap_or(0.0)
     }
 
-    fn get_ram_usage_percent(&self) -> Result<f32, CheckError> {
-        match fs::read_to_string("/proc/meminfo") {
-            Ok(meminfo) => {
-                let mut mem_total = 0.0;
-                let mut mem_available = 0.0;
+    fn calc_meminfo_usage(meminfo: &str) -> Result<f32, CheckError> {
+        let mut mem_total = 0.0;
+        let mut mem_available = 0.0;
 
-                for line in meminfo.lines() {
-                    if line.starts_with("MemTotal:") {
-                        mem_total = Self::extract_kb_value(line);
-                    } else if line.starts_with("MemAvailable:") {
-                        mem_available = Self::extract_kb_value(line);
-                    }
-                }
-
-                return Ok((mem_total - mem_available) * 100.0 / mem_total);
+        for line in meminfo.lines() {
+            if line.starts_with("MemTotal:") {
+                mem_total = Self::extract_kb_value(line);
+            } else if line.starts_with("MemAvailable:") {
+                mem_available = Self::extract_kb_value(line);
             }
-            Err(err) => Err(CheckError::RamCheckError(err.to_string())),
         }
+
+        if mem_total == 0.0 {
+            return Err(CheckError::RamCheckError("MemTotal missing".into()));
+        }
+
+        Ok((mem_total - mem_available) * 100.0 / mem_total)
+    }
+
+    fn get_ram_usage_percent(&self) -> Result<f32, CheckError> {
+        let meminfo = fs::read_to_string("/proc/meminfo")
+            .map_err(|err| CheckError::RamCheckError(err.to_string()))?;
+
+        Self::calc_meminfo_usage(&meminfo)
     }
 
     fn is_warning(&self, current_value: f32) -> bool {
@@ -105,6 +111,53 @@ mod tests {
 
     mod ram_checker {
         use super::*;
+
+        mod extract_kb_value {
+            use super::*;
+
+            #[test]
+            fn it_should_correctly_extract_kb_value() {
+                assert_eq!(
+                    RamChecker::extract_kb_value("MemTotal:        1921988 kB"),
+                    1921988.0,
+                );
+            }
+
+            #[test]
+            fn it_should_fall_back_to_zero_value() {
+                assert_eq!(
+                    RamChecker::extract_kb_value("Just the random string without kb info"),
+                    0.0,
+                );
+            }
+        }
+
+        mod calc_meminfo_usage {
+            use super::*;
+
+            #[test]
+            fn it_should_correctly_calc_ram_usage_percent() {
+                let meminfo = "\
+MemTotal:       1000 kB
+MemAvailable:    500 kB
+                ";
+
+                assert_eq!(RamChecker::calc_meminfo_usage(meminfo).unwrap(), 50.0,)
+            }
+
+            #[test]
+            fn if_should_not_be_able_to_calc_ram_usage() {
+                let meminfo = "Just the random string";
+
+                let result = RamChecker::calc_meminfo_usage(meminfo);
+
+                let err = result.unwrap_err();
+                match err {
+                    CheckError::RamCheckError(msg) => assert!(msg.contains("MemTotal")),
+                    _ => panic!("Unexpected error type"),
+                }
+            }
+        }
 
         mod is_warning {
             use super::*;
