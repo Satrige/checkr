@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::Router;
 
 use super::routes::health::HealthRouters;
-use crate::{config::AppConfig, models::checker::Checker};
+use crate::{config::AppConfig, domain::checker::Checker};
 
 pub async fn start_server(config: AppConfig, checkers: Vec<Arc<dyn Checker + Send + Sync>>) {
     let app = Router::new().nest("/health", HealthRouters::new(checkers).get_rountes());

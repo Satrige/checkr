@@ -1,12 +1,8 @@
 use std::fs;
 
-use crate::{
-    models::{
-        checker::{CheckResult, CheckStatus, Checker},
-        errors::CheckError,
-    },
-    ram::ram_settings::RamSettings,
-};
+use super::super::checker::{CheckResult, CheckStatus, Checker};
+use super::super::errors::CheckError;
+use super::settings::RamSettings;
 
 pub struct RamChecker {
     settings: RamSettings,

@@ -1,8 +1,9 @@
-use crate::models::checker::{CheckResult, CheckStatus, Checker};
 use axum::{Json, Router, http::StatusCode, routing::get};
 use futures::future::join_all;
 use std::sync::Arc;
 use tokio::task::spawn_blocking;
+
+use crate::domain::checker::{CheckResult, CheckStatus, Checker};
 
 pub struct HealthRouters {
     checkers: Arc<Vec<Arc<dyn Checker + Send + Sync>>>,

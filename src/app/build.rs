@@ -1,8 +1,10 @@
 use crate::{
     config::AppConfig,
-    cpu::{cpu_checker::CpuChecker, cpu_settings::CpuSettings},
-    models::checker::Checker,
-    ram::{ram_checker::RamChecker, ram_settings::RamSettings},
+    domain::{
+        checker::Checker,
+        cpu::{checker::CpuChecker, settings::CpuSettings},
+        ram::{checker::RamChecker, settings::RamSettings},
+    },
 };
 use std::sync::Arc;
 

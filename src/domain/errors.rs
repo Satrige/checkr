@@ -1,5 +1,5 @@
 #[derive(thiserror::Error, Debug)]
-pub enum CheckError {
+pub(crate) enum CheckError {
     #[error("Cpu check error: {0}")]
     CpuCheckError(String),
 

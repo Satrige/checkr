@@ -1,10 +1,8 @@
 use std::fs;
 
-use crate::cpu::cpu_settings::CpuSettings;
-use crate::models::{
-    checker::{CheckResult, CheckStatus, Checker},
-    errors::CheckError,
-};
+use super::super::checker::{CheckResult, CheckStatus, Checker};
+use super::super::errors::CheckError;
+use super::settings::CpuSettings;
 
 pub struct CpuChecker {
     settings: CpuSettings,

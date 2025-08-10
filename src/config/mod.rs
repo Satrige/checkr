@@ -3,11 +3,13 @@ use serde::Deserialize;
 use serde_json;
 use std::fs;
 
+use crate::infra::log_level::LogLevel;
+
 pub mod cpu_config;
 pub mod errors;
 pub mod ram_config;
 
-use crate::models::{errors::ConfigError, log_level::LogLevel};
+use errors::ConfigError;
 
 #[derive(Parser, Debug)]
 #[command(name = "checkr")]

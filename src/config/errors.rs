@@ -1,7 +1,7 @@
 use thiserror;
 
 #[derive(thiserror::Error, Debug)]
-pub enum ConfigError {
+pub(crate) enum ConfigError {
     #[error("Read config error: {0}")]
     ReadConfigError(String),
 
