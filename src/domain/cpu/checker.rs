@@ -1,34 +1,21 @@
-use std::fs;
-
-use super::super::checker::{CheckResult, CheckStatus, Checker};
-use super::super::errors::CheckError;
+use super::super::{
+    checker::{CheckResult, CheckStatus, Checker},
+    ports::CpuSource,
+};
 use super::settings::CpuSettings;
 
-pub struct CpuChecker {
+pub struct CpuChecker<S: CpuSource> {
     settings: CpuSettings,
     name: String,
+    source: S,
 }
 
-impl CpuChecker {
-    pub fn new(settings: CpuSettings) -> Self {
+impl<S: CpuSource> CpuChecker<S> {
+    pub fn new(settings: CpuSettings, source: S) -> Self {
         CpuChecker {
             settings,
             name: "cpu".to_string(),
-        }
-    }
-
-    fn get_cpu_usage(&self) -> Result<(f32, f32, f32), CheckError> {
-        match fs::read_to_string("/proc/loadvg") {
-            Ok(content) => {
-                let parts: Vec<&str> = content.split_whitespace().collect();
-
-                return Ok((
-                    parts[0].parse().unwrap_or(0.0),
-                    parts[1].parse().unwrap_or(0.0),
-                    parts[2].parse().unwrap_or(0.0),
-                ));
-            }
-            Err(err) => Err(CheckError::CpuCheckError(err.to_string())),
+            source,
         }
     }
 
@@ -45,7 +32,7 @@ impl CpuChecker {
     }
 }
 
-impl Checker for CpuChecker {
+impl<S: CpuSource> Checker for CpuChecker<S> {
     fn get_name(&self) -> &str {
         self.name.as_str()
     }
@@ -63,7 +50,7 @@ impl Checker for CpuChecker {
             ));
         }
 
-        let load_values = self.get_cpu_usage()?;
+        let load_values = self.source.read_load()?;
         let (one, five, fifteen) = load_values;
 
         if self.is_critical(&load_values) {

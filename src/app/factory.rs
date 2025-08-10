@@ -5,6 +5,7 @@ use crate::{
         cpu::{checker::CpuChecker, settings::CpuSettings},
         ram::{checker::RamChecker, settings::RamSettings},
     },
+    infra::proc_loadavg::ProcLoadavg,
 };
 use std::sync::Arc;
 
@@ -12,7 +13,7 @@ pub fn build_checkers(config: &AppConfig) -> anyhow::Result<Vec<Arc<dyn Checker 
     let mut result: Vec<Arc<dyn Checker + Send + Sync>> = Vec::new();
 
     if let Some(cpu_config) = &config.cpu {
-        let cpu_checker = CpuChecker::new(CpuSettings::try_from(cpu_config)?);
+        let cpu_checker = CpuChecker::new(CpuSettings::try_from(cpu_config)?, ProcLoadavg);
         result.push(Arc::new(cpu_checker) as Arc<dyn Checker + Send + Sync>);
     }
 
