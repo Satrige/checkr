@@ -1,10 +1,11 @@
 mod cpu;
 mod ram;
 
-mod web;
-
 mod app;
 mod config;
+mod domain;
+mod web;
+
 mod models;
 
 use app::build::build_checkers;
