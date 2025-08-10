@@ -1,4 +1,4 @@
-use crate::{cpu::cpu_config::CpuConfig, models::errors::WrongSettingsError};
+use crate::{config::cpu_config::CpuConfig, models::errors::WrongSettingsError};
 
 pub struct CpuThresholdSettings {
     pub one_threshold: f32,

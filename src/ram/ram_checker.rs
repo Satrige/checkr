@@ -5,7 +5,7 @@ use crate::{
         checker::{CheckResult, CheckStatus, Checker},
         errors::CheckError,
     },
-    ram::{ram_config::RamConfig, ram_settings::RamSettings},
+    ram::ram_settings::RamSettings,
 };
 
 pub struct RamChecker {
@@ -14,13 +14,11 @@ pub struct RamChecker {
 }
 
 impl RamChecker {
-    pub fn new(ram_config: &RamConfig) -> anyhow::Result<Self> {
-        let settings = RamSettings::try_from(ram_config)?;
-
-        Ok(RamChecker {
+    pub fn new(settings: RamSettings) -> Self {
+        RamChecker {
             settings,
             name: "ram".to_string(),
-        })
+        }
     }
 
     fn extract_kb_value(line: &str) -> f32 {

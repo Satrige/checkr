@@ -1,6 +1,5 @@
 use std::fs;
 
-use crate::cpu::cpu_config::CpuConfig;
 use crate::cpu::cpu_settings::CpuSettings;
 use crate::models::{
     checker::{CheckResult, CheckStatus, Checker},
@@ -13,13 +12,11 @@ pub struct CpuChecker {
 }
 
 impl CpuChecker {
-    pub fn new(cpu_config: &CpuConfig) -> anyhow::Result<Self> {
-        let settings = CpuSettings::try_from(cpu_config)?;
-
-        Ok(CpuChecker {
+    pub fn new(settings: CpuSettings) -> Self {
+        CpuChecker {
             settings,
             name: "cpu".to_string(),
-        })
+        }
     }
 
     fn get_cpu_usage(&self) -> Result<(f32, f32, f32), CheckError> {
