@@ -4,7 +4,7 @@ use crate::{
 };
 use std::sync::Arc;
 
-pub fn get_checkers(config: &AppConfig) -> anyhow::Result<Vec<Arc<dyn Checker + Send + Sync>>> {
+pub fn build_checkers(config: &AppConfig) -> anyhow::Result<Vec<Arc<dyn Checker + Send + Sync>>> {
     let mut result: Vec<Arc<dyn Checker + Send + Sync>> = Vec::new();
 
     if let Some(cpu_config) = &config.cpu {
