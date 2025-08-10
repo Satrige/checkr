@@ -154,56 +154,68 @@ MemAvailable:    500 kB
         }
 
         mod is_warning {
+            use crate::config::ram_config::RamConfig;
+
             use super::*;
 
             #[test]
             fn it_should_fire_warning_because_of_the_threshold() {
-                let ram_checker = RamChecker::new(&RamConfig {
-                    enabled: Some(true),
-                    warning_threshold: Some(80.0),
-                    critical_threshold: Some(90.0),
-                })
-                .unwrap();
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(ram_checker.is_warning(90.0), true);
             }
 
             #[test]
             fn it_should_not_fire_warning() {
-                let ram_checker = RamChecker::new(&RamConfig {
-                    enabled: Some(true),
-                    warning_threshold: Some(80.0),
-                    critical_threshold: Some(90.0),
-                })
-                .unwrap();
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(ram_checker.is_warning(79.0), false);
             }
         }
 
         mod is_critical {
+            use crate::config::ram_config::RamConfig;
+
             use super::*;
 
             #[test]
             fn it_should_fire_critical_because_of_the_threshold() {
-                let ram_checker = RamChecker::new(&RamConfig {
-                    enabled: Some(true),
-                    warning_threshold: Some(80.0),
-                    critical_threshold: Some(90.0),
-                })
-                .unwrap();
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(ram_checker.is_critical(91.0), true);
             }
 
             #[test]
             fn it_should_not_fire_critical() {
-                let ram_checker = RamChecker::new(&RamConfig {
-                    enabled: Some(true),
-                    warning_threshold: Some(80.0),
-                    critical_threshold: Some(90.0),
-                })
-                .unwrap();
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(ram_checker.is_critical(89.0), false);
             }

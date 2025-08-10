@@ -94,172 +94,188 @@ mod tests {
         use super::*;
 
         mod is_warning {
-            use crate::cpu::cpu_config::CpuThresholdsConfig;
+            use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
 
             use super::*;
 
             #[test]
             fn it_should_fire_warning_because_of_one_minute_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_warning(&(1.1, 0.9, 0.9)), true);
             }
 
             #[test]
             fn it_should_fire_warning_because_of_five_minutes_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 1.1, 0.9)), true);
             }
 
             #[test]
             fn it_should_fire_warning_because_of_fifteen_minutes_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 1.1)), true);
             }
 
             #[test]
             fn it_should_not_fire_warning() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 0.9)), false);
             }
         }
 
         mod is_critical {
-            use crate::cpu::cpu_config::CpuThresholdsConfig;
+            use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
 
             use super::*;
 
             #[test]
             fn it_should_fire_critical_because_of_one_minute_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_critical(&(1.1, 0.9, 0.9)), true);
             }
 
             #[test]
             fn it_should_fire_critical_because_of_five_minutes_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 1.1, 0.9)), true);
             }
 
             #[test]
             fn it_should_fire_critical_because_of_fifteen_minutes_threshold() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 1.1)), true);
             }
 
             #[test]
             fn it_should_not_fire_critical() {
-                let cpu_checker = CpuChecker::new(&CpuConfig {
-                    enabled: Some(true),
-                    warning: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                    critical: Some(CpuThresholdsConfig {
-                        one_threshold: 1.0,
-                        five_threshold: 1.0,
-                        fifteen_threshold: 1.0,
-                    }),
-                })
-                .unwrap();
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 0.9)), false);
             }
