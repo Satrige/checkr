@@ -50,7 +50,7 @@ impl<S: CpuSource> Checker for CpuChecker<S> {
             ));
         }
 
-        let load_values = self.source.read_load()?;
+        let load_values = self.source.parse_values()?;
         let (one, five, fifteen) = load_values;
 
         if self.is_critical(&load_values) {

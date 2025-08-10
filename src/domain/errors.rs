@@ -1,13 +1,4 @@
 #[derive(thiserror::Error, Debug)]
-pub(crate) enum CheckError {
-    #[error("Cpu check error: {0}")]
-    CpuCheckError(String),
-
-    #[error("Ram check error: {0}")]
-    RamCheckError(String),
-}
-
-#[derive(thiserror::Error, Debug)]
 pub(crate) enum ParseError {
     #[error("Cpu parse error: {0}")]
     CpuParseError(String),

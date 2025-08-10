@@ -1,53 +1,23 @@
-use std::fs;
+use super::super::{
+    checker::{CheckResult, CheckStatus, Checker},
+    ports::RamSource,
+};
 
-use super::super::checker::{CheckResult, CheckStatus, Checker};
-use super::super::errors::CheckError;
 use super::settings::RamSettings;
 
-pub struct RamChecker {
+pub struct RamChecker<S: RamSource> {
     settings: RamSettings,
     name: String,
+    source: S,
 }
 
-impl RamChecker {
-    pub fn new(settings: RamSettings) -> Self {
+impl<S: RamSource> RamChecker<S> {
+    pub fn new(settings: RamSettings, source: S) -> Self {
         RamChecker {
             settings,
             name: "ram".to_string(),
+            source,
         }
-    }
-
-    fn extract_kb_value(line: &str) -> f32 {
-        line.split_whitespace()
-            .nth(1)
-            .and_then(|value| value.parse::<f32>().ok())
-            .unwrap_or(0.0)
-    }
-
-    fn calc_meminfo_usage(meminfo: &str) -> Result<f32, CheckError> {
-        let mut mem_total = 0.0;
-        let mut mem_available = 0.0;
-
-        for line in meminfo.lines() {
-            if line.starts_with("MemTotal:") {
-                mem_total = Self::extract_kb_value(line);
-            } else if line.starts_with("MemAvailable:") {
-                mem_available = Self::extract_kb_value(line);
-            }
-        }
-
-        if mem_total == 0.0 {
-            return Err(CheckError::RamCheckError("MemTotal missing".into()));
-        }
-
-        Ok((mem_total - mem_available) * 100.0 / mem_total)
-    }
-
-    fn get_ram_usage_percent(&self) -> Result<f32, CheckError> {
-        let meminfo = fs::read_to_string("/proc/meminfo")
-            .map_err(|err| CheckError::RamCheckError(err.to_string()))?;
-
-        Self::calc_meminfo_usage(&meminfo)
     }
 
     fn is_warning(&self, current_value: f32) -> bool {
@@ -59,7 +29,7 @@ impl RamChecker {
     }
 }
 
-impl Checker for RamChecker {
+impl<S: RamSource> Checker for RamChecker<S> {
     fn get_name(&self) -> &str {
         self.name.as_str()
     }
@@ -77,7 +47,7 @@ impl Checker for RamChecker {
             ));
         }
 
-        let current_value = self.get_ram_usage_percent()?;
+        let current_value = self.source.parse_values()?;
 
         if self.is_critical(current_value) {
             return Ok(CheckResult::new(
