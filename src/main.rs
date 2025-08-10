@@ -4,6 +4,7 @@ mod ram;
 mod app;
 mod config;
 mod domain;
+mod infra;
 mod web;
 
 mod models;

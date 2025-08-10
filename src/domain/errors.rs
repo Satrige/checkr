@@ -1,5 +1,3 @@
-use thiserror;
-
 #[derive(thiserror::Error, Debug)]
 pub enum CheckError {
     #[error("Cpu check error: {0}")]
@@ -7,15 +5,6 @@ pub enum CheckError {
 
     #[error("Ram check error: {0}")]
     RamCheckError(String),
-}
-
-#[derive(thiserror::Error, Debug)]
-pub enum ConfigError {
-    #[error("Read config error: {0}")]
-    ReadConfigError(String),
-
-    #[error("Parse config error: {0}")]
-    ParseConfigError(String),
 }
 
 #[derive(thiserror::Error, Debug)]
