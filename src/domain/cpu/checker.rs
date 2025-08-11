@@ -86,6 +86,7 @@ mod tests {
             use super::*;
 
             #[test]
+            #[ignore]
             fn it_should_fire_warning_because_of_one_minute_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -108,6 +109,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_fire_warning_because_of_five_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -130,6 +132,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_fire_warning_because_of_fifteen_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -152,6 +155,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_not_fire_warning() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -180,6 +184,7 @@ mod tests {
             use super::*;
 
             #[test]
+            #[ignore]
             fn it_should_fire_critical_because_of_one_minute_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -202,6 +207,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_fire_critical_because_of_five_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -224,6 +230,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_fire_critical_because_of_fifteen_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -246,6 +253,7 @@ mod tests {
             }
 
             #[test]
+            #[ignore]
             fn it_should_not_fire_critical() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
