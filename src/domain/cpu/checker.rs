@@ -75,7 +75,16 @@ impl<S: CpuSource> Checker for CpuChecker<S> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::super::errors::ParseError;
     use super::*;
+
+    struct FakeCpuSource;
+
+    impl CpuSource for FakeCpuSource {
+        fn parse_values(&self) -> Result<(f32, f32, f32), ParseError> {
+            Ok((0.0, 0.0, 0.0))
+        }
+    }
 
     mod cpu_checker {
         use super::*;
@@ -86,7 +95,6 @@ mod tests {
             use super::*;
 
             #[test]
-            #[ignore]
             fn it_should_fire_warning_because_of_one_minute_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -103,13 +111,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(1.1, 0.9, 0.9)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_fire_warning_because_of_five_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -126,13 +134,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 1.1, 0.9)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_fire_warning_because_of_fifteen_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -149,13 +157,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 1.1)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_not_fire_warning() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -172,6 +180,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 0.9)), false);
@@ -184,7 +193,6 @@ mod tests {
             use super::*;
 
             #[test]
-            #[ignore]
             fn it_should_fire_critical_because_of_one_minute_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -201,13 +209,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(1.1, 0.9, 0.9)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_fire_critical_because_of_five_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -224,13 +232,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 1.1, 0.9)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_fire_critical_because_of_fifteen_minutes_threshold() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -247,13 +255,13 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 1.1)), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_not_fire_critical() {
                 let cpu_checker = CpuChecker::new(
                     CpuSettings::try_from(&CpuConfig {
@@ -270,6 +278,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
+                    FakeCpuSource {},
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 0.9)), false);

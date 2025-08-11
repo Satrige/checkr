@@ -13,9 +13,12 @@ pub fn parse_loadavg(s: &str) -> Result<(f32, f32, f32), ParseError> {
         .ok_or_else(|| ParseError::CpuParseError("missing 15m".into()))?;
 
     let parse_number = |x: &str| {
-        x.parse::<f32>()
-            .map_err(|e| ParseError::CpuParseError(e.to_string()))
+        x.parse::<f32>().map_err(|e| {
+            tracing::info!("Error: parse_number: {} | {}", x, e.to_string());
+            ParseError::CpuParseError("can't parse input".into())
+        })
     };
+
     Ok((
         parse_number(one)?,
         parse_number(five)?,
@@ -36,11 +39,41 @@ mod tests {
         }
 
         #[test]
+        fn it_should_miss_1m_value() {
+            let err = parse_loadavg("").unwrap_err();
+
+            match err {
+                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 1m")),
+                _ => panic!("Unexpected error type"),
+            }
+        }
+
+        #[test]
+        fn it_should_miss_5m_value() {
+            let err = parse_loadavg("just").unwrap_err();
+
+            match err {
+                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 5m")),
+                _ => panic!("Unexpected error type"),
+            }
+        }
+
+        #[test]
+        fn it_should_miss_15m_value() {
+            let err = parse_loadavg("just random").unwrap_err();
+
+            match err {
+                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 15m")),
+                _ => panic!("Unexpected error type"),
+            }
+        }
+
+        #[test]
         fn it_should_not_parse_1m_value() {
             let err = parse_loadavg("just random string").unwrap_err();
 
             match err {
-                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 1m")),
+                ParseError::CpuParseError(msg) => assert!(msg.contains("can't parse input")),
                 _ => panic!("Unexpected error type"),
             }
         }
@@ -50,7 +83,7 @@ mod tests {
             let err = parse_loadavg("10 random string").unwrap_err();
 
             match err {
-                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 5m")),
+                ParseError::CpuParseError(msg) => assert!(msg.contains("can't parse input")),
                 _ => panic!("Unexpected error type"),
             }
         }
@@ -60,7 +93,7 @@ mod tests {
             let err = parse_loadavg("10 15 string").unwrap_err();
 
             match err {
-                ParseError::CpuParseError(msg) => assert!(msg.contains("missing 15m")),
+                ParseError::CpuParseError(msg) => assert!(msg.contains("can't parse input")),
                 _ => panic!("Unexpected error type"),
             }
         }
