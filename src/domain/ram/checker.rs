@@ -163,5 +163,99 @@ mod tests {
                 assert_eq!(ram_checker.is_critical(89.0), false);
             }
         }
+
+        mod check {
+            use super::*;
+            use crate::config::ram_config::RamConfig;
+
+            #[test]
+            fn it_should_be_disabled() {
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(false),
+                        warning_threshold: None,
+                        critical_threshold: None,
+                    })
+                    .unwrap(),
+                    FakeRamSource::default(),
+                );
+
+                assert_eq!(
+                    ram_checker.check().unwrap(),
+                    CheckResult::new(String::from("ram"), CheckStatus::DISABLED, None),
+                );
+            }
+
+            #[test]
+            fn it_should_be_critical() {
+                let current_value = 91.0;
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                    FakeRamSource {
+                        value: current_value,
+                    },
+                );
+
+                assert_eq!(
+                    ram_checker.check().unwrap(),
+                    CheckResult::new(
+                        String::from("ram"),
+                        CheckStatus::CRITICAL,
+                        Some(format!("usage: {current_value}%"))
+                    ),
+                );
+            }
+
+            #[test]
+            fn it_should_be_warning() {
+                let current_value = 81.0;
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                    FakeRamSource {
+                        value: current_value,
+                    },
+                );
+
+                assert_eq!(
+                    ram_checker.check().unwrap(),
+                    CheckResult::new(
+                        String::from("ram"),
+                        CheckStatus::WARNING,
+                        Some(format!("usage: {current_value}%"))
+                    ),
+                );
+            }
+
+            #[test]
+            fn it_should_be_ok() {
+                let current_value = 79.0;
+                let ram_checker = RamChecker::new(
+                    RamSettings::try_from(&RamConfig {
+                        enabled: Some(true),
+                        warning_threshold: Some(80.0),
+                        critical_threshold: Some(90.0),
+                    })
+                    .unwrap(),
+                    FakeRamSource {
+                        value: current_value,
+                    },
+                );
+
+                assert_eq!(
+                    ram_checker.check().unwrap(),
+                    CheckResult::new(String::from("ram"), CheckStatus::OK, None),
+                );
+            }
+        }
     }
 }
