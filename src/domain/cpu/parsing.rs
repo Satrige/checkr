@@ -37,7 +37,7 @@ mod tests {
 
         #[test]
         fn it_should_not_parse_1m_value() {
-            let err = parse_loadavg("just random sting").unwrap_err();
+            let err = parse_loadavg("just random string").unwrap_err();
 
             match err {
                 ParseError::CpuParseError(msg) => assert!(msg.contains("missing 1m")),
@@ -47,7 +47,7 @@ mod tests {
 
         #[test]
         fn it_should_not_parse_5m_value() {
-            let err = parse_loadavg("10 random sting").unwrap_err();
+            let err = parse_loadavg("10 random string").unwrap_err();
 
             match err {
                 ParseError::CpuParseError(msg) => assert!(msg.contains("missing 5m")),
@@ -57,7 +57,7 @@ mod tests {
 
         #[test]
         fn it_should_not_parse_15m_value() {
-            let err = parse_loadavg("10 15 sting").unwrap_err();
+            let err = parse_loadavg("10 15 string").unwrap_err();
 
             match err {
                 ParseError::CpuParseError(msg) => assert!(msg.contains("missing 15m")),
