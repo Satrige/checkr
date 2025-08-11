@@ -71,7 +71,16 @@ impl<S: RamSource> Checker for RamChecker<S> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::super::errors::ParseError;
     use super::*;
+
+    struct FakeRamSource;
+
+    impl RamSource for FakeRamSource {
+        fn parse_values(&self) -> Result<f32, ParseError> {
+            Ok(0.0)
+        }
+    }
 
     mod ram_checker {
         use super::*;
@@ -81,7 +90,6 @@ mod tests {
             use super::*;
 
             #[test]
-            #[ignore]
             fn it_should_fire_warning_because_of_the_threshold() {
                 let ram_checker = RamChecker::new(
                     RamSettings::try_from(&RamConfig {
@@ -90,13 +98,13 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
+                    FakeRamSource {},
                 );
 
                 assert_eq!(ram_checker.is_warning(90.0), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_not_fire_warning() {
                 let ram_checker = RamChecker::new(
                     RamSettings::try_from(&RamConfig {
@@ -105,6 +113,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
+                    FakeRamSource {},
                 );
 
                 assert_eq!(ram_checker.is_warning(79.0), false);
@@ -117,7 +126,6 @@ mod tests {
             use super::*;
 
             #[test]
-            #[ignore]
             fn it_should_fire_critical_because_of_the_threshold() {
                 let ram_checker = RamChecker::new(
                     RamSettings::try_from(&RamConfig {
@@ -126,13 +134,13 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
+                    FakeRamSource {},
                 );
 
                 assert_eq!(ram_checker.is_critical(91.0), true);
             }
 
             #[test]
-            #[ignore]
             fn it_should_not_fire_critical() {
                 let ram_checker = RamChecker::new(
                     RamSettings::try_from(&RamConfig {
@@ -141,6 +149,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
+                    FakeRamSource {},
                 );
 
                 assert_eq!(ram_checker.is_critical(89.0), false);
