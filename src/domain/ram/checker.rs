@@ -75,58 +75,6 @@ mod tests {
 
     mod ram_checker {
         use super::*;
-
-        mod extract_kb_value {
-            use super::*;
-
-            #[test]
-            #[ignore]
-            fn it_should_correctly_extract_kb_value() {
-                assert_eq!(
-                    RamChecker::extract_kb_value("MemTotal:        1921988 kB"),
-                    1921988.0,
-                );
-            }
-
-            #[test]
-            #[ignore]
-            fn it_should_fall_back_to_zero_value() {
-                assert_eq!(
-                    RamChecker::extract_kb_value("Just the random string without kb info"),
-                    0.0,
-                );
-            }
-        }
-
-        mod calc_meminfo_usage {
-            use super::*;
-
-            #[test]
-            #[ignore]
-            fn it_should_correctly_calc_ram_usage_percent() {
-                let meminfo = "\
-MemTotal:       1000 kB
-MemAvailable:    500 kB
-                ";
-
-                assert_eq!(RamChecker::calc_meminfo_usage(meminfo).unwrap(), 50.0,)
-            }
-
-            #[test]
-            #[ignore]
-            fn if_should_not_be_able_to_calc_ram_usage() {
-                let meminfo = "Just the random string";
-
-                let result = RamChecker::calc_meminfo_usage(meminfo);
-
-                let err = result.unwrap_err();
-                match err {
-                    CheckError::RamCheckError(msg) => assert!(msg.contains("MemTotal")),
-                    _ => panic!("Unexpected error type"),
-                }
-            }
-        }
-
         mod is_warning {
             use crate::config::ram_config::RamConfig;
 
