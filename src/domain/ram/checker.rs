@@ -74,11 +74,19 @@ mod tests {
     use super::super::super::errors::ParseError;
     use super::*;
 
-    struct FakeRamSource;
+    struct FakeRamSource {
+        value: f32,
+    }
+
+    impl Default for FakeRamSource {
+        fn default() -> Self {
+            FakeRamSource { value: 0.0 }
+        }
+    }
 
     impl RamSource for FakeRamSource {
         fn parse_values(&self) -> Result<f32, ParseError> {
-            Ok(0.0)
+            Ok(self.value)
         }
     }
 
@@ -98,7 +106,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
-                    FakeRamSource {},
+                    FakeRamSource::default(),
                 );
 
                 assert_eq!(ram_checker.is_warning(90.0), true);
@@ -113,7 +121,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
-                    FakeRamSource {},
+                    FakeRamSource::default(),
                 );
 
                 assert_eq!(ram_checker.is_warning(79.0), false);
@@ -134,7 +142,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
-                    FakeRamSource {},
+                    FakeRamSource::default(),
                 );
 
                 assert_eq!(ram_checker.is_critical(91.0), true);
@@ -149,7 +157,7 @@ mod tests {
                         critical_threshold: Some(90.0),
                     })
                     .unwrap(),
-                    FakeRamSource {},
+                    FakeRamSource::default(),
                 );
 
                 assert_eq!(ram_checker.is_critical(89.0), false);

@@ -78,11 +78,25 @@ mod tests {
     use super::super::super::errors::ParseError;
     use super::*;
 
-    struct FakeCpuSource;
+    struct FakeCpuSource {
+        one_value: f32,
+        five_value: f32,
+        fifteen_value: f32,
+    }
+
+    impl Default for FakeCpuSource {
+        fn default() -> Self {
+            FakeCpuSource {
+                one_value: 0.0,
+                five_value: 0.0,
+                fifteen_value: 0.0,
+            }
+        }
+    }
 
     impl CpuSource for FakeCpuSource {
         fn parse_values(&self) -> Result<(f32, f32, f32), ParseError> {
-            Ok((0.0, 0.0, 0.0))
+            Ok((self.one_value, self.five_value, self.fifteen_value))
         }
     }
 
@@ -111,7 +125,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(1.1, 0.9, 0.9)), true);
@@ -134,7 +148,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 1.1, 0.9)), true);
@@ -157,7 +171,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 1.1)), true);
@@ -180,7 +194,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_warning(&(0.9, 0.9, 0.9)), false);
@@ -209,7 +223,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(1.1, 0.9, 0.9)), true);
@@ -232,7 +246,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 1.1, 0.9)), true);
@@ -255,7 +269,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 1.1)), true);
@@ -278,7 +292,7 @@ mod tests {
                         }),
                     })
                     .unwrap(),
-                    FakeCpuSource {},
+                    FakeCpuSource::default(),
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 0.9)), false);
