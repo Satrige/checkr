@@ -1,4 +1,6 @@
-use crate::{models::errors::WrongSettingsError, ram::ram_config::RamConfig};
+use crate::config::ram_config::RamConfig;
+
+use super::super::errors::WrongSettingsError;
 
 pub struct RamSettings {
     pub enabled: bool,

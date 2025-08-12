@@ -1,38 +1,23 @@
-use axum::Router;
-use clap::Parser;
-
-mod cpu;
-mod ram;
-
+mod app;
 mod config;
-mod helpers;
-mod models;
-mod routes;
+mod domain;
+mod infra;
+mod web;
 
-use config::{AppConfig, Args};
-use helpers::get_checkers::get_checkers;
-use models::log_level::LogLevel;
-use routes::HealthRouters;
+use app::factory::build_checkers;
+
+use crate::infra::log_level::LogLevel;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
-    let config = AppConfig::from_file(&args.config)?;
+    let config = config::load()?;
 
     tracing_subscriber::fmt()
         .with_max_level(config.log_level.as_ref().unwrap_or(&LogLevel::ERROR))
         .init();
 
-    tracing::info!("Started checkr on port: {}", config.port);
-
-    let checkers = get_checkers(&config)?;
-
-    let app = Router::new().nest("/health", HealthRouters::new(checkers).get_rountes());
-
-    let port = config.port;
-    let addr = format!("0.0.0.0:{port}");
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    let checkers = build_checkers(&config)?;
+    web::start_server(config, checkers).await;
 
     Ok(())
 }

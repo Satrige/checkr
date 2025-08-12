@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-#[derive(Serialize)]
+#[derive(Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum CheckStatus {
     OK,
@@ -10,7 +10,7 @@ pub enum CheckStatus {
     DISABLED,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, PartialEq, Eq, Debug)]
 pub struct CheckResult {
     name: String,
     result: CheckStatus,
