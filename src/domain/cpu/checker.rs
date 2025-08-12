@@ -102,10 +102,9 @@ mod tests {
 
     mod cpu_checker {
         use super::*;
+        use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
 
         mod is_warning {
-            use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
-
             use super::*;
 
             #[test]
@@ -202,8 +201,6 @@ mod tests {
         }
 
         mod is_critical {
-            use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
-
             use super::*;
 
             #[test]
@@ -296,6 +293,142 @@ mod tests {
                 );
 
                 assert_eq!(cpu_checker.is_critical(&(0.9, 0.9, 0.9)), false);
+            }
+        }
+
+        mod check {
+            use super::*;
+
+            #[test]
+            fn it_should_be_disabled() {
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(false),
+                        warning: None,
+                        critical: None,
+                    })
+                    .unwrap(),
+                    FakeCpuSource::default(),
+                );
+
+                assert_eq!(
+                    cpu_checker.check().unwrap(),
+                    CheckResult::new(String::from("cpu"), CheckStatus::DISABLED, None),
+                );
+            }
+
+            #[test]
+            fn it_should_be_critical() {
+                let one_value = 1.1;
+                let five_value = 1.1;
+                let fifteen_value = 1.1;
+
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 0.8,
+                            five_threshold: 0.8,
+                            fifteen_threshold: 0.8,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                    FakeCpuSource {
+                        one_value,
+                        five_value,
+                        fifteen_value,
+                    },
+                );
+
+                assert_eq!(
+                    cpu_checker.check().unwrap(),
+                    CheckResult::new(
+                        String::from("cpu"),
+                        CheckStatus::CRITICAL,
+                        Some(format!(
+                            "one: {one_value}, five: {five_value}, fifteen: {fifteen_value}"
+                        )),
+                    ),
+                );
+            }
+
+            #[test]
+            fn it_should_be_warning() {
+                let one_value = 0.9;
+                let five_value = 0.9;
+                let fifteen_value = 0.9;
+
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 0.8,
+                            five_threshold: 0.8,
+                            fifteen_threshold: 0.8,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                    FakeCpuSource {
+                        one_value,
+                        five_value,
+                        fifteen_value,
+                    },
+                );
+
+                assert_eq!(
+                    cpu_checker.check().unwrap(),
+                    CheckResult::new(
+                        String::from("cpu"),
+                        CheckStatus::WARNING,
+                        Some(format!(
+                            "one: {one_value}, five: {five_value}, fifteen: {fifteen_value}"
+                        )),
+                    ),
+                );
+            }
+
+            #[test]
+            fn it_should_be_ok() {
+                let one_value = 0.7;
+                let five_value = 0.7;
+                let fifteen_value = 0.7;
+
+                let cpu_checker = CpuChecker::new(
+                    CpuSettings::try_from(&CpuConfig {
+                        enabled: Some(true),
+                        warning: Some(CpuThresholdsConfig {
+                            one_threshold: 0.8,
+                            five_threshold: 0.8,
+                            fifteen_threshold: 0.8,
+                        }),
+                        critical: Some(CpuThresholdsConfig {
+                            one_threshold: 1.0,
+                            five_threshold: 1.0,
+                            fifteen_threshold: 1.0,
+                        }),
+                    })
+                    .unwrap(),
+                    FakeCpuSource {
+                        one_value,
+                        five_value,
+                        fifteen_value,
+                    },
+                );
+
+                assert_eq!(
+                    cpu_checker.check().unwrap(),
+                    CheckResult::new(String::from("cpu"), CheckStatus::OK, None),
+                );
             }
         }
     }
