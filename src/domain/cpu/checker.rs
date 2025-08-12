@@ -2,7 +2,7 @@ use super::super::{
     checker::{CheckResult, CheckStatus, Checker},
     ports::CpuSource,
 };
-use super::settings::CpuSettings;
+use super::CpuSettings;
 
 pub struct CpuChecker<S: CpuSource> {
     settings: CpuSettings,

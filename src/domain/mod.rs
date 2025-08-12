@@ -1,6 +1,10 @@
-pub mod checker;
-pub mod cpu;
+mod checker;
+mod cpu;
 pub mod errors;
-pub mod ram;
+mod ram;
 
 pub mod ports;
+
+pub use checker::*;
+pub use cpu::*;
+pub use ram::*;

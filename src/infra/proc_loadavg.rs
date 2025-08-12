@@ -1,4 +1,4 @@
-use crate::domain::{cpu::parsing::parse_loadavg, errors::ParseError, ports::CpuSource};
+use crate::domain::{errors::ParseError, parse_loadavg, ports::CpuSource};
 use std::fs;
 
 pub struct ProcLoadavg;

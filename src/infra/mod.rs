@@ -1,3 +1,6 @@
 pub mod log_level;
-pub mod proc_loadavg;
-pub mod proc_meminfo;
+mod proc_loadavg;
+mod proc_meminfo;
+
+pub use proc_loadavg::*;
+pub use proc_meminfo::*;

@@ -3,7 +3,7 @@ use super::super::{
     ports::RamSource,
 };
 
-use super::settings::RamSettings;
+use super::RamSettings;
 
 pub struct RamChecker<S: RamSource> {
     settings: RamSettings,

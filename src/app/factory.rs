@@ -1,11 +1,7 @@
 use crate::{
     config::AppConfig,
-    domain::{
-        checker::Checker,
-        cpu::{checker::CpuChecker, settings::CpuSettings},
-        ram::{checker::RamChecker, settings::RamSettings},
-    },
-    infra::{proc_loadavg::ProcLoadavg, proc_meminfo::ProcMeminfo},
+    domain::{Checker, CpuChecker, CpuSettings, RamChecker, RamSettings},
+    infra::{ProcLoadavg, ProcMeminfo},
 };
 use std::sync::Arc;
 

@@ -1,4 +1,4 @@
-use crate::domain::{errors::ParseError, ports::RamSource, ram::parsing::parse_meminfo};
+use crate::domain::{errors::ParseError, parse_meminfo, ports::RamSource};
 use std::fs;
 
 pub struct ProcMeminfo;
