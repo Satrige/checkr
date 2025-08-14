@@ -4,9 +4,9 @@ mod domain;
 mod infra;
 mod web;
 
-use app::factory::build_checkers;
+use app::build_checkers;
 
-use crate::infra::log_level::LogLevel;
+use crate::infra::LogLevel;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

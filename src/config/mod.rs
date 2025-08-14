@@ -4,11 +4,13 @@ use serde_json;
 use std::fs;
 
 mod cpu_config;
+mod disk_usage_config;
 mod errors;
 mod ram_config;
 
-use crate::infra::log_level::LogLevel;
+use crate::infra::LogLevel;
 pub use cpu_config::*;
+pub use disk_usage_config::*;
 use errors::ConfigError;
 pub use ram_config::*;
 
@@ -26,6 +28,7 @@ pub struct AppConfig {
 
     pub cpu: Option<CpuConfig>,
     pub ram: Option<RamConfig>,
+    pub disk_usage: Option<DiskUsageConfig>,
 }
 
 impl AppConfig {

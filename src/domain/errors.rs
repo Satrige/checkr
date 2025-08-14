@@ -14,4 +14,7 @@ pub enum WrongSettingsError {
 
     #[error("Wrong RAM settings: {0}")]
     WrongRamSettingsError(String),
+
+    #[error("Wrong Disk Usage settings: {0}")]
+    WrongDiskUsageSettingsError(String),
 }
