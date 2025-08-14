@@ -92,9 +92,8 @@ mod tests {
 
     mod ram_checker {
         use super::*;
+        use crate::config::RamConfig;
         mod is_warning {
-            use crate::config::ram_config::RamConfig;
-
             use super::*;
 
             #[test]
@@ -129,8 +128,6 @@ mod tests {
         }
 
         mod is_critical {
-            use crate::config::ram_config::RamConfig;
-
             use super::*;
 
             #[test]
@@ -166,7 +163,6 @@ mod tests {
 
         mod check {
             use super::*;
-            use crate::config::ram_config::RamConfig;
 
             #[test]
             fn it_should_be_disabled() {

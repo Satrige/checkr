@@ -102,7 +102,7 @@ mod tests {
 
     mod cpu_checker {
         use super::*;
-        use crate::config::cpu_config::{CpuConfig, CpuThresholdsConfig};
+        use crate::config::{CpuConfig, CpuThresholdsConfig};
 
         mod is_warning {
             use super::*;
