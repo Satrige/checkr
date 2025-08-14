@@ -1,3 +1,4 @@
+mod checker;
 mod settings;
 
-pub mod settings::*;
+pub use settings::*;
