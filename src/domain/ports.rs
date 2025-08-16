@@ -1,4 +1,4 @@
-use crate::domain::errors::ParseError;
+use crate::domain::{DiskSnapshot, errors::ParseError};
 
 pub trait CpuSource: Send + Sync {
     fn parse_values(&self) -> Result<(f32, f32, f32), ParseError>;
@@ -9,5 +9,5 @@ pub trait RamSource: Send + Sync {
 }
 
 pub trait DiskUsageSource: Send + Sync {
-    fn parse_values(&self) -> Result<f32, ParseError>;
+    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, ParseError>;
 }
