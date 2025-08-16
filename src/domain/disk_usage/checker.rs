@@ -47,6 +47,8 @@ impl<S: DiskUsageSource> Checker for DiskUsageChecker<S> {
             ));
         }
 
+        let load_values = self.source.parse_values()?;
+
         // TODO Implement the logic
         Ok(CheckResult::new(self.name.clone(), CheckStatus::OK, None))
     }

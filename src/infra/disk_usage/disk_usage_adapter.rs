@@ -1,0 +1,74 @@
+use once_cell::sync::Lazy;
+use std::collections::HashSet;
+
+use crate::domain::{DiskSnapshot, errors::ParseError, ports::DiskUsageSource};
+use crate::infra::{MountEntry, ProcSelfMounts, get_disk_usage_for};
+
+// TODO: Cover only 95% of the cases. Need to enhance in further versions
+static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
+    [
+        "proc",
+        "sysfs",
+        "tmpfs",
+        "devpts",
+        "devtmpfs",
+        "mqueue",
+        "pstore",
+        "securityfs",
+        "configfs",
+        "bpf",
+        "tracefs",
+        "debugfs",
+        "hugetlbfs",
+        "ramfs",
+        "selinuxfs",
+        "binfmt_misc",
+        "fusectl",
+        "autofs",
+        "cgroup",
+        "cgroup2",
+        "overlay",
+        "squashfs",
+    ]
+    .into_iter()
+    .collect()
+});
+
+struct ProcDiskUsage;
+
+impl ProcDiskUsage {
+    fn filter_mount_entries(mount_entries: Vec<MountEntry>) -> Vec<MountEntry> {
+        mount_entries
+            .into_iter()
+            .filter(|mount_entry| !SKIP_FS.contains(mount_entry.fs_type.as_str()))
+            .collect() // here we will allocate a new vector, using filtered vals
+    }
+
+    fn get_mount_entries() -> Result<Vec<MountEntry>, ParseError> {
+        let proc_self_mounts = ProcSelfMounts::new();
+
+        let mount_entries = proc_self_mounts.parse_mounts()?;
+
+        Ok(Self::filter_mount_entries(mount_entries))
+    }
+}
+
+impl DiskUsageSource for ProcDiskUsage {
+    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, ParseError> {
+        let filtered_mount_entries = Self::get_mount_entries()?;
+
+        let disk_snapshots = filtered_mount_entries
+            .iter()
+            .map(|&mount_entry| {
+                let usage = get_disk_usage_for(&mount_entry.target)?;
+
+                DiskSnapshot {
+                    mount: String::from(&mount_entry.target),
+                    usage,
+                }
+            })
+            .collect();
+
+        Ok(disk_snapshots)
+    }
+}
