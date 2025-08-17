@@ -2,7 +2,7 @@ use once_cell::sync::Lazy;
 use std::collections::HashSet;
 
 use crate::domain::{DiskSnapshot, errors::ParseError, ports::DiskUsageSource};
-use crate::infra::{MountEntry, ProcSelfMounts, get_disk_usage_for};
+use crate::infra::{MountEntry, ProcSelfMounts, StatfsData};
 
 // TODO: Cover only 95% of the cases. Need to enhance in further versions
 static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
@@ -34,7 +34,7 @@ static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     .collect()
 });
 
-struct ProcDiskUsage;
+pub struct ProcDiskUsage;
 
 impl ProcDiskUsage {
     fn filter_mount_entries(mount_entries: Vec<MountEntry>) -> Vec<MountEntry> {
@@ -55,20 +55,18 @@ impl ProcDiskUsage {
 
 impl DiskUsageSource for ProcDiskUsage {
     fn parse_values(&self) -> Result<Vec<DiskSnapshot>, ParseError> {
+        let mut dist_snapshots = Vec::new();
+
         let filtered_mount_entries = Self::get_mount_entries()?;
+        for mount_entry in &filtered_mount_entries {
+            let usage = StatfsData::get_disk_usage_for(&mount_entry.target)?;
 
-        let disk_snapshots = filtered_mount_entries
-            .iter()
-            .map(|&mount_entry| {
-                let usage = get_disk_usage_for(&mount_entry.target)?;
+            dist_snapshots.push(DiskSnapshot {
+                mount: mount_entry.target.display().to_string(),
+                usage: usage.percent_used,
+            });
+        }
 
-                DiskSnapshot {
-                    mount: String::from(&mount_entry.target),
-                    usage,
-                }
-            })
-            .collect();
-
-        Ok(disk_snapshots)
+        Ok(dist_snapshots)
     }
 }
