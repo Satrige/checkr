@@ -16,7 +16,7 @@ impl HealthRouters {
         }
     }
 
-    pub fn get_rountes(&self) -> Router {
+    pub fn get_routes(&self) -> Router {
         let clonned_checkers = self.checkers.clone();
         Router::new().route("/", get(move || handler(clonned_checkers)))
     }

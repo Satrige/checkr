@@ -1,1 +1,3 @@
-pub mod factory;
+mod factory;
+
+pub use factory::build_checkers;

@@ -1,4 +1,4 @@
-use crate::config::cpu_config::CpuConfig;
+use crate::config::CpuConfig;
 
 use super::super::errors::WrongSettingsError;
 

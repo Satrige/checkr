@@ -3,13 +3,16 @@ use serde::Deserialize;
 use serde_json;
 use std::fs;
 
-use crate::infra::log_level::LogLevel;
+mod cpu_config;
+mod disk_usage_config;
+mod errors;
+mod ram_config;
 
-pub mod cpu_config;
-pub mod errors;
-pub mod ram_config;
-
+use crate::infra::LogLevel;
+pub use cpu_config::*;
+pub use disk_usage_config::*;
 use errors::ConfigError;
+pub use ram_config::*;
 
 #[derive(Parser, Debug)]
 #[command(name = "checkr")]
@@ -23,8 +26,9 @@ pub struct AppConfig {
     pub port: u16,
     pub log_level: Option<LogLevel>,
 
-    pub cpu: Option<cpu_config::CpuConfig>,
-    pub ram: Option<ram_config::RamConfig>,
+    pub cpu: Option<CpuConfig>,
+    pub ram: Option<RamConfig>,
+    pub disk_usage: Option<DiskUsageConfig>,
 }
 
 impl AppConfig {

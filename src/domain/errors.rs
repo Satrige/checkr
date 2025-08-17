@@ -5,6 +5,9 @@ pub(crate) enum ParseError {
 
     #[error("Ram parse error: {0}")]
     RamParseError(String),
+
+    #[error("Disk usage parse error: {0}")]
+    DiskUsageError(String),
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -14,4 +17,7 @@ pub enum WrongSettingsError {
 
     #[error("Wrong RAM settings: {0}")]
     WrongRamSettingsError(String),
+
+    #[error("Wrong Disk Usage settings: {0}")]
+    WrongDiskUsageSettingsError(String),
 }

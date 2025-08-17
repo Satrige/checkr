@@ -1,7 +1,10 @@
 use crate::{
     config::AppConfig,
-    domain::{Checker, CpuChecker, CpuSettings, RamChecker, RamSettings},
-    infra::{ProcLoadavg, ProcMeminfo},
+    domain::{
+        Checker, CpuChecker, CpuSettings, DiskUsageChecker, DiskUsageSettings, RamChecker,
+        RamSettings,
+    },
+    infra::{ProcDiskUsage, ProcLoadavg, ProcMeminfo},
 };
 use std::sync::Arc;
 
@@ -16,6 +19,14 @@ pub fn build_checkers(config: &AppConfig) -> anyhow::Result<Vec<Arc<dyn Checker 
     if let Some(ram_config) = &config.ram {
         let ram_checker = RamChecker::new(RamSettings::try_from(ram_config)?, ProcMeminfo);
         result.push(Arc::new(ram_checker) as Arc<dyn Checker + Send + Sync>);
+    }
+
+    if let Some(disk_usage_config) = &config.disk_usage {
+        let disk_usage_checker = DiskUsageChecker::new(
+            DiskUsageSettings::try_from(disk_usage_config)?,
+            ProcDiskUsage,
+        );
+        result.push(Arc::new(disk_usage_checker) as Arc<dyn Checker + Send + Sync>);
     }
 
     Ok(result)
