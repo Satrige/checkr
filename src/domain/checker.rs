@@ -27,6 +27,11 @@ impl CheckResult {
     }
 }
 
+pub enum CheckLevel {
+    WARNING = 0,
+    CRITICAL = 1,
+}
+
 pub trait Checker: Send + Sync {
     fn get_name(&self) -> &str;
 

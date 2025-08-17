@@ -1,10 +1,9 @@
-use crate::domain::DiskSnapshot;
-
 use super::super::{
-    checker::{CheckResult, CheckStatus, Checker},
+    checker::{CheckLevel, CheckResult, CheckStatus, Checker},
     ports::DiskUsageSource,
 };
 
+use super::DiskSnapshot;
 use super::DiskUsageSettings;
 
 pub struct DiskUsageChecker<S: DiskUsageSource> {
@@ -26,22 +25,21 @@ impl<S: DiskUsageSource> DiskUsageChecker<S> {
         current_value > self.settings.warning_threshold
     }
 
-    fn get_warning_mounts(&self, disk_snapshots: &[DiskSnapshot]) -> Vec<DiskSnapshot> {
-        disk_snapshots
-            .iter()
-            .filter(|disk_snapshot| self.is_warning(disk_snapshot.usage))
-            .cloned()
-            .collect()
-    }
-
     fn is_critical(&self, current_value: f32) -> bool {
         current_value > self.settings.critical_threshold
     }
 
-    fn get_critical_mounts(&self, disk_snapshots: &[DiskSnapshot]) -> Vec<DiskSnapshot> {
+    fn filter_by_level(
+        &self,
+        disk_snapshots: &[DiskSnapshot],
+        lvl: CheckLevel,
+    ) -> Vec<DiskSnapshot> {
         disk_snapshots
             .iter()
-            .filter(|disk_snapshot| self.is_critical(disk_snapshot.usage))
+            .filter(|disk_snapshot| match lvl {
+                CheckLevel::WARNING => self.is_warning(disk_snapshot.usage),
+                CheckLevel::CRITICAL => self.is_critical(disk_snapshot.usage),
+            })
             .cloned()
             .collect()
     }
@@ -55,7 +53,7 @@ impl<S: DiskUsageSource> DiskUsageChecker<S> {
                     disk_snapshot.mount, disk_snapshot.usage
                 )
             })
-            .collect::<Vec<_>>()
+            .collect::<Vec<String>>()
             .join("; ")
     }
 }
@@ -80,7 +78,7 @@ impl<S: DiskUsageSource> Checker for DiskUsageChecker<S> {
 
         let load_values = self.source.parse_values()?;
 
-        let critical_mounts = self.get_critical_mounts(&load_values);
+        let critical_mounts = self.filter_by_level(&load_values, CheckLevel::CRITICAL);
         if critical_mounts.len() > 0 {
             return Ok(CheckResult::new(
                 self.name.clone(),
@@ -89,7 +87,7 @@ impl<S: DiskUsageSource> Checker for DiskUsageChecker<S> {
             ));
         }
 
-        let warning_mounts = self.get_warning_mounts(&load_values);
+        let warning_mounts = self.filter_by_level(&load_values, CheckLevel::WARNING);
         if warning_mounts.len() > 0 {
             return Ok(CheckResult::new(
                 self.name.clone(),
