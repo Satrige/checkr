@@ -11,5 +11,5 @@ pub struct DiskUsageStats {
     pub free: u64,
     pub available: u64,
     pub used: u64,
-    pub pct_used: f32,
+    pub percent_used: f32,
 }
