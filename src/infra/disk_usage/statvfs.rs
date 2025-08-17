@@ -9,7 +9,11 @@ impl StatfsData {
     pub fn get_disk_usage_for(mount_path: &Path) -> Result<DiskUsageStats, ParseError> {
         let statvfs_buffer = Self::get_statvfs_data(mount_path)?;
 
-        Ok(Self::calc_disk_usage_for(&statvfs_buffer))
+        let result = Self::calc_disk_usage_for(&statvfs_buffer);
+
+        tracing::debug!("Disk usage for {:?}: {:?}", mount_path.to_str(), result);
+
+        Ok(result)
     }
 
     fn get_statvfs_data(mount_path: &Path) -> Result<statvfs, ParseError> {

@@ -6,6 +6,7 @@ pub struct MountEntry {
     pub fs_type: String,
 }
 
+#[derive(Debug)]
 pub struct DiskUsageStats {
     pub total: u64,
     pub free: u64,
