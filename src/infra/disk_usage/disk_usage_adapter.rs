@@ -55,18 +55,19 @@ impl ProcDiskUsage {
 
 impl DiskUsageSource for ProcDiskUsage {
     fn parse_values(&self) -> Result<Vec<DiskSnapshot>, ParseError> {
-        let mut dist_snapshots = Vec::new();
+        let proc_self_mounts = ProcSelfMounts::new();
+        let mount_entries = proc_self_mounts.parse_mounts()?;
 
-        let filtered_mount_entries = Self::get_mount_entries()?;
-        for mount_entry in &filtered_mount_entries {
-            let usage = StatfsData::get_disk_usage_for(&mount_entry.target)?;
+        let snapshots = Self::filter_mount_entries(mount_entries)
+            .iter()
+            .map(|mount_entry| {
+                StatfsData::get_disk_usage_for(&mount_entry.target).map(|usage| DiskSnapshot {
+                    mount: mount_entry.target.display().to_string(),
+                    usage: usage.percent_used,
+                })
+            })
+            .collect::<Result<Vec<DiskSnapshot>, ParseError>>()?;
 
-            dist_snapshots.push(DiskSnapshot {
-                mount: mount_entry.target.display().to_string(),
-                usage: usage.percent_used,
-            });
-        }
-
-        Ok(dist_snapshots)
+        Ok(snapshots)
     }
 }
