@@ -17,8 +17,8 @@ impl HealthRouters {
     }
 
     pub fn get_routes(&self) -> Router {
-        let clonned_checkers = self.checkers.clone();
-        Router::new().route("/", get(move || handler(clonned_checkers)))
+        let cloned_checkers = self.checkers.clone();
+        Router::new().route("/", get(move || handler(cloned_checkers)))
     }
 }
 
@@ -48,9 +48,8 @@ async fn handler(
     let check_results: Vec<CheckResult> = join_all(handlers)
         .await
         .into_iter()
-        .map(|res| match res {
-            Ok(single_result) => single_result,
-            Err(e) => {
+        .map(|res| {
+            res.unwrap_or_else(|e| {
                 tracing::error!("Join error: {}", e.to_string());
 
                 CheckResult::new(
@@ -58,7 +57,7 @@ async fn handler(
                     CheckStatus::ERROR,
                     Some("Join error".to_string()),
                 )
-            }
+            })
         })
         .collect();
 
