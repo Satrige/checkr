@@ -1,8 +1,9 @@
 use once_cell::sync::Lazy;
 use std::collections::HashSet;
 
-use crate::domain::{DiskSnapshot, errors::ParseError, ports::DiskUsageSource};
-use crate::infra::{MountEntry, ProcSelfMounts, StatfsData};
+use super::super::ParseError;
+use super::{MountEntry, ProcSelfMounts, StatfsData};
+use crate::domain::{DiskSnapshot, ports::DiskUsageSource};
 
 // TODO: Cover only 95% of the cases. Need to enhance in further versions
 static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {

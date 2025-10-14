@@ -1,4 +1,5 @@
-use crate::domain::{errors::ParseError, ports::CpuSource};
+use super::ParseError;
+use crate::domain::ports::CpuSource;
 use std::fs;
 
 pub struct ProcLoadavg;

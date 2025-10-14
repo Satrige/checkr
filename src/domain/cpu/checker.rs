@@ -75,8 +75,8 @@ impl<S: CpuSource> Checker for CpuChecker<S> {
 
 #[cfg(test)]
 mod tests {
-    use super::super::super::errors::ParseError;
     use super::*;
+    use crate::infra::ParseError;
 
     struct FakeCpuSource {
         one_value: f32,

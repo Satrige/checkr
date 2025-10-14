@@ -71,8 +71,8 @@ impl<S: RamSource> Checker for RamChecker<S> {
 
 #[cfg(test)]
 mod tests {
-    use super::super::super::errors::ParseError;
     use super::*;
+    use crate::infra::ParseError;
 
     struct FakeRamSource {
         value: f32,

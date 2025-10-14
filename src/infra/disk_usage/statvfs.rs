@@ -1,7 +1,8 @@
 use libc::statvfs;
 use std::{ffi::CString, io, os::unix::ffi::OsStrExt, path::Path};
 
-use crate::{domain::errors::ParseError, infra::DiskUsageStats};
+use super::super::ParseError;
+use super::DiskUsageStats;
 
 pub struct StatfsData;
 

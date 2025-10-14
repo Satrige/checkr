@@ -1,7 +1,7 @@
 use std::{fs, path::PathBuf};
 
+use super::super::ParseError;
 use super::MountEntry;
-use crate::domain::errors::ParseError;
 
 const DEFAULT_MOUNTS_PATH: &str = "/proc/self/mounts";
 
@@ -46,7 +46,7 @@ impl ProcSelfMounts {
         Ok(mount_entries)
     }
 
-    fn read_mounts(&self) -> Result<String, crate::domain::errors::ParseError> {
+    fn read_mounts(&self) -> Result<String, ParseError> {
         fs::read_to_string(&self.moutns_path).map_err(|e| {
             ParseError::DiskUsageError(format!("{}: {}", self.moutns_path.display(), e.to_string()))
         })

@@ -1,7 +1,6 @@
 FROM rust:1.90-slim AS builder
 WORKDIR /app
 
-# Cache deps
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir -p src && echo "fn main() { println!(\"build cache warmup\"); }" > src/main.rs
 RUN cargo build --release && rm -rf target/release/deps/* src
@@ -17,7 +16,6 @@ RUN useradd -m -u 10001 appuser \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/target/release/checkr /usr/local/bin/checkr
-
 
 ENV CONFIG_PATH=/app/config.json
 EXPOSE 3000
