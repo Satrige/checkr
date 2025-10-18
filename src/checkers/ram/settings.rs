@@ -1,6 +1,8 @@
-use crate::config::RamConfig;
+use super::RamConfig;
 
-use super::super::errors::WrongSettingsError;
+#[derive(thiserror::Error, Debug)]
+#[error("Wrong RAM settings: {0}")]
+pub struct WrongRamSettingsError(pub String);
 
 pub struct RamSettings {
     pub enabled: bool,
@@ -19,7 +21,7 @@ impl Default for RamSettings {
 }
 
 impl TryFrom<&RamConfig> for RamSettings {
-    type Error = WrongSettingsError;
+    type Error = WrongRamSettingsError;
 
     fn try_from(ram_config: &RamConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
@@ -35,7 +37,7 @@ impl TryFrom<&RamConfig> for RamSettings {
 
         // The case the check is explicitly enabled but the thresholds are absent
         if ram_config.warning_threshold.is_none() || ram_config.critical_threshold.is_none() {
-            return Err(WrongSettingsError::WrongRamSettingsError(
+            return Err(WrongRamSettingsError(
                 "The thresholds are not specified".into(),
             ));
         }

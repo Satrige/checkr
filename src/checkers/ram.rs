@@ -1,9 +1,15 @@
-use super::super::{
-    checker::{CheckResult, CheckStatus, Checker},
-    ports::RamSource,
-};
+mod config;
+mod proc_meminfo;
+mod settings;
 
-use super::RamSettings;
+use super::{CheckResult, CheckStatus, Checker};
+pub use config::*;
+pub use proc_meminfo::ProcMeminfo;
+pub use settings::RamSettings;
+
+pub trait RamSource: Send + Sync {
+    fn parse_values(&self) -> anyhow::Result<f32>;
+}
 
 pub struct RamChecker<S: RamSource> {
     settings: RamSettings,
@@ -72,7 +78,6 @@ impl<S: RamSource> Checker for RamChecker<S> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::infra::ParseError;
 
     struct FakeRamSource {
         value: f32,
@@ -85,14 +90,14 @@ mod tests {
     }
 
     impl RamSource for FakeRamSource {
-        fn parse_values(&self) -> Result<f32, ParseError> {
+        fn parse_values(&self) -> anyhow::Result<f32> {
             Ok(self.value)
         }
     }
 
     mod ram_checker {
+        use super::RamConfig;
         use super::*;
-        use crate::config::RamConfig;
         mod is_warning {
             use super::*;
 

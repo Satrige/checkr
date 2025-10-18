@@ -1,6 +1,4 @@
-use crate::checkers::cpu::CpuConfig;
-use crate::checkers::disk_usage::DiskUsageConfig;
-use crate::checkers::ram::RamConfig;
+use crate::checkers::{cpu::CpuConfig, disk_usage::DiskUsageConfig, ram::RamConfig};
 use crate::utils::LogLevel;
 use clap::Parser;
 use serde::Deserialize;

@@ -4,10 +4,10 @@ const DEFAULT_MOUNTS_PATH: &str = "/proc/self/mounts";
 
 #[derive(thiserror::Error, Debug)]
 pub enum SelfMountsError {
-    #[error("Wrong mounts file format: {0}")]
+    #[error("Can't read mounts file: {0}")]
     ReadError(String),
 
-    #[error("Can't read mounts file: {0}")]
+    #[error("Wrong mounts file format: {0}")]
     ParseError(String),
 }
 

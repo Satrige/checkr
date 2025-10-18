@@ -3,10 +3,14 @@ mod infra;
 mod settings;
 
 use super::{CheckLevel, CheckResult, CheckStatus, Checker};
+use crate::checkers::disk_usage::infra::DiskSnapshot;
 pub use config::*;
 pub use infra::ProcDiskUsage;
-use infra::{DiskSnapshot, DiskUsageSource};
 pub use settings::DiskUsageSettings;
+
+pub trait DiskUsageSource: Send + Sync {
+    fn parse_values(&self) -> anyhow::Result<Vec<DiskSnapshot>>;
+}
 
 pub struct DiskUsageChecker<S: DiskUsageSource> {
     settings: DiskUsageSettings,

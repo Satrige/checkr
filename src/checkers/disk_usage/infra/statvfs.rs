@@ -3,10 +3,10 @@ use std::{ffi::CString, io, os::unix::ffi::OsStrExt, path::Path};
 
 #[derive(thiserror::Error, Debug)]
 pub enum StatFsError {
-    #[error("Wrong statfs file format: {0}")]
+    #[error("Can't read statfs file: {0}")]
     ReadError(String),
 
-    #[error("Can't read statfs file: {0}")]
+    #[error("Wrong statfs file format: {0}")]
     ParseError(String),
 }
 

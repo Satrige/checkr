@@ -1,14 +1,11 @@
 mod proc_self_mounts;
 mod statvfs;
 
+use super::DiskUsageSource;
 use once_cell::sync::Lazy;
 use proc_self_mounts::*;
 use statvfs::*;
 use std::collections::HashSet;
-
-pub trait DiskUsageSource: Send + Sync {
-    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, anyhow::Error>;
-}
 
 #[derive(Clone)]
 pub struct DiskSnapshot {
@@ -56,7 +53,7 @@ impl ProcDiskUsage {
             .collect() // here we will allocate a new vector, using filtered vals
     }
 
-    fn get_mount_entries() -> Result<Vec<MountEntry>, anyhow::Error> {
+    fn get_mount_entries() -> anyhow::Result<Vec<MountEntry>> {
         let proc_self_mounts = ProcSelfMounts::new();
 
         let mount_entries = proc_self_mounts.parse_mounts()?;
@@ -66,11 +63,8 @@ impl ProcDiskUsage {
 }
 
 impl DiskUsageSource for ProcDiskUsage {
-    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, anyhow::Error> {
-        let proc_self_mounts = ProcSelfMounts::new();
-        let mount_entries = proc_self_mounts.parse_mounts()?;
-
-        let snapshots = Self::filter_mount_entries(mount_entries)
+    fn parse_values(&self) -> anyhow::Result<Vec<DiskSnapshot>> {
+        let snapshots = Self::get_mount_entries()?
             .iter()
             .map(|mount_entry| {
                 StatfsData::get_disk_usage_for(&mount_entry.target).map(|usage| DiskSnapshot {

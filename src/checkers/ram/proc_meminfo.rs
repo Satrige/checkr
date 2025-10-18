@@ -1,6 +1,15 @@
-use super::ParseError;
-use crate::domain::ports::RamSource;
+use super::RamSource;
+use anyhow::bail;
 use std::fs;
+
+#[derive(thiserror::Error, Debug)]
+pub enum ProcMeminfoError {
+    #[error("Can't read proc/meminfo file: {0}")]
+    ReadError(String),
+
+    #[error("Wrong format of proc/meminfo file: {0}")]
+    ParseError(String),
+}
 
 pub struct ProcMeminfo;
 
@@ -12,7 +21,7 @@ impl ProcMeminfo {
             .unwrap_or(0.0)
     }
 
-    fn parse_meminfo(meminfo: &str) -> Result<f32, ParseError> {
+    fn parse_meminfo(meminfo: &str) -> anyhow::Result<f32> {
         let mut mem_total = 0.0;
         let mut mem_available = 0.0;
 
@@ -25,7 +34,7 @@ impl ProcMeminfo {
         }
 
         if mem_total == 0.0 {
-            return Err(ParseError::RamParseError("MemTotal missing".into()));
+            bail!(ProcMeminfoError::ParseError("MemTotal missing".into()));
         }
 
         Ok((mem_total - mem_available) * 100.0 / mem_total)
@@ -33,9 +42,9 @@ impl ProcMeminfo {
 }
 
 impl RamSource for ProcMeminfo {
-    fn parse_values(&self) -> Result<f32, ParseError> {
+    fn parse_values(&self) -> anyhow::Result<f32> {
         let s = fs::read_to_string("/proc/meminfo")
-            .map_err(|e| ParseError::RamParseError(e.to_string()))?;
+            .map_err(|e| ProcMeminfoError::ReadError(e.to_string()))?;
 
         Self::parse_meminfo(&s)
     }
@@ -88,8 +97,12 @@ MemAvailable:    500 kB
                 let result = ProcMeminfo::parse_meminfo(meminfo);
 
                 let err = result.unwrap_err();
-                match err {
-                    ParseError::RamParseError(msg) => assert!(msg.contains("MemTotal")),
+                let inner = err
+                    .downcast::<ProcMeminfoError>()
+                    .expect("wrong error type");
+
+                match inner {
+                    ProcMeminfoError::ParseError(msg) => assert!(msg.contains("MemTotal")),
                     _ => panic!("Unexpected error type"),
                 }
             }
