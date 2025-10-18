@@ -83,7 +83,6 @@ impl<S: CpuSource> Checker for CpuChecker<S> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use proc_loadavg::CpuParseError;
 
     struct FakeCpuSource {
         one_value: f32,

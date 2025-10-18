@@ -60,7 +60,6 @@ mod tests {
                     CpuParseError(msg) => {
                         assert!(msg.contains(error_message));
                     }
-                    _ => panic!("Unexpected error type"),
                 }
             }
 
