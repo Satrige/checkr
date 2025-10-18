@@ -1,26 +1,23 @@
-// mod app;
+mod app;
 mod checkers;
 mod config;
 mod utils;
-// mod domain;
-// mod infra;
-// mod web;
-// mod checkers;
+mod web;
 //
-// use app::build_checkers;
+use app::build_checkers;
 
-// use crate::infra::LogLevel;
+use utils::LogLevel;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let config = config::load()?;
-    //
-    // tracing_subscriber::fmt()
-    //     .with_max_level(config.log_level.as_ref().unwrap_or(&LogLevel::ERROR))
-    //     .init();
-    //
-    // let checkers = build_checkers(&config)?;
-    // web::start_server(config, checkers).await;
+
+    tracing_subscriber::fmt()
+        .with_max_level(config.log_level.as_ref().unwrap_or(&LogLevel::ERROR))
+        .init();
+
+    let checkers = build_checkers(&config)?;
+    web::start_server(config, checkers).await;
 
     Ok(())
 }

@@ -1,6 +1,8 @@
-use crate::config::DiskUsageConfig;
+use super::DiskUsageConfig;
 
-use super::super::errors::WrongSettingsError;
+#[derive(thiserror::Error, Debug)]
+#[error("Wrong Disk Usage settings: {0}")]
+pub struct WrongDiskUsageSettingsError(pub String);
 
 pub struct DiskUsageSettings {
     pub enabled: bool,
@@ -19,7 +21,7 @@ impl Default for DiskUsageSettings {
 }
 
 impl TryFrom<&DiskUsageConfig> for DiskUsageSettings {
-    type Error = WrongSettingsError;
+    type Error = WrongDiskUsageSettingsError;
 
     fn try_from(disk_usage_config: &DiskUsageConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
@@ -37,7 +39,7 @@ impl TryFrom<&DiskUsageConfig> for DiskUsageSettings {
         if disk_usage_config.warning_threshold.is_none()
             || disk_usage_config.critical_threshold.is_none()
         {
-            return Err(WrongSettingsError::WrongDiskUsageSettingsError(
+            return Err(WrongDiskUsageSettingsError(
                 "The thresholds are not specified".into(),
             ));
         }

@@ -3,9 +3,14 @@ mod proc_loadavg;
 mod settings;
 
 use super::{CheckResult, CheckStatus, Checker};
+use crate::checkers::cpu::proc_loadavg::CpuParseError;
 pub use config::*;
-use proc_loadavg::CpuSource;
-use settings::CpuSettings;
+pub use proc_loadavg::ProcLoadavg;
+pub use settings::CpuSettings;
+
+pub trait CpuSource: Send + Sync {
+    fn parse_values(&self) -> Result<(f32, f32, f32), CpuParseError>;
+}
 
 pub struct CpuChecker<S: CpuSource> {
     settings: CpuSettings,

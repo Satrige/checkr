@@ -1,9 +1,20 @@
+mod proc_self_mounts;
+mod statvfs;
+
 use once_cell::sync::Lazy;
+use proc_self_mounts::*;
+use statvfs::*;
 use std::collections::HashSet;
 
-use super::super::ParseError;
-use super::{MountEntry, ProcSelfMounts, StatfsData};
-use crate::domain::{DiskSnapshot, ports::DiskUsageSource};
+pub trait DiskUsageSource: Send + Sync {
+    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, anyhow::Error>;
+}
+
+#[derive(Clone)]
+pub struct DiskSnapshot {
+    pub mount: String,
+    pub usage: f32,
+}
 
 // TODO: Cover only 95% of the cases. Need to enhance in further versions
 static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
@@ -45,7 +56,7 @@ impl ProcDiskUsage {
             .collect() // here we will allocate a new vector, using filtered vals
     }
 
-    fn get_mount_entries() -> Result<Vec<MountEntry>, ParseError> {
+    fn get_mount_entries() -> Result<Vec<MountEntry>, anyhow::Error> {
         let proc_self_mounts = ProcSelfMounts::new();
 
         let mount_entries = proc_self_mounts.parse_mounts()?;
@@ -55,7 +66,7 @@ impl ProcDiskUsage {
 }
 
 impl DiskUsageSource for ProcDiskUsage {
-    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, ParseError> {
+    fn parse_values(&self) -> Result<Vec<DiskSnapshot>, anyhow::Error> {
         let proc_self_mounts = ProcSelfMounts::new();
         let mount_entries = proc_self_mounts.parse_mounts()?;
 
@@ -67,7 +78,7 @@ impl DiskUsageSource for ProcDiskUsage {
                     usage: usage.percent_used,
                 })
             })
-            .collect::<Result<Vec<DiskSnapshot>, ParseError>>()?;
+            .collect::<Result<Vec<DiskSnapshot>, StatFsError>>()?;
 
         Ok(snapshots)
     }

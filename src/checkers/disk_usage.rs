@@ -1,10 +1,12 @@
-use super::super::{
-    checker::{CheckLevel, CheckResult, CheckStatus, Checker},
-    ports::DiskUsageSource,
-};
+mod config;
+mod infra;
+mod settings;
 
-use super::DiskSnapshot;
-use super::DiskUsageSettings;
+use super::{CheckLevel, CheckResult, CheckStatus, Checker};
+pub use config::*;
+pub use infra::ProcDiskUsage;
+use infra::{DiskSnapshot, DiskUsageSource};
+pub use settings::DiskUsageSettings;
 
 pub struct DiskUsageChecker<S: DiskUsageSource> {
     settings: DiskUsageSettings,

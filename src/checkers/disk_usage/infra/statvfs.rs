@@ -1,13 +1,28 @@
 use libc::statvfs;
 use std::{ffi::CString, io, os::unix::ffi::OsStrExt, path::Path};
 
-use super::super::ParseError;
-use super::DiskUsageStats;
+#[derive(thiserror::Error, Debug)]
+pub enum StatFsError {
+    #[error("Wrong statfs file format: {0}")]
+    ReadError(String),
+
+    #[error("Can't read statfs file: {0}")]
+    ParseError(String),
+}
+
+#[derive(Debug)]
+pub struct DiskUsageStats {
+    pub total: u64,
+    pub free: u64,
+    pub available: u64,
+    pub used: u64,
+    pub percent_used: f32,
+}
 
 pub struct StatfsData;
 
 impl StatfsData {
-    pub fn get_disk_usage_for(mount_path: &Path) -> Result<DiskUsageStats, ParseError> {
+    pub fn get_disk_usage_for(mount_path: &Path) -> Result<DiskUsageStats, StatFsError> {
         let statvfs_buffer = Self::get_statvfs_data(mount_path)?;
 
         let result = Self::calc_disk_usage_for(&statvfs_buffer);
@@ -17,10 +32,10 @@ impl StatfsData {
         Ok(result)
     }
 
-    fn get_statvfs_data(mount_path: &Path) -> Result<statvfs, ParseError> {
+    fn get_statvfs_data(mount_path: &Path) -> Result<statvfs, StatFsError> {
         // Convert Path to CString for libc usage
         let c_path = CString::new(mount_path.as_os_str().as_bytes()).map_err(|err| {
-            ParseError::DiskUsageError(format!(
+            StatFsError::ReadError(format!(
                 "Statvfs: path contains interior NUL: {}",
                 err.to_string()
             ))
@@ -32,7 +47,7 @@ impl StatfsData {
             unsafe { statvfs(c_path.as_ptr(), &mut statvfs_buffer as *mut statvfs) };
 
         if statvfs_status_code != 0 {
-            return Err(ParseError::DiskUsageError(format!(
+            return Err(StatFsError::ParseError(format!(
                 "Statvfs: Can't get statvfs info: {} | Status code: {}",
                 io::Error::last_os_error().to_string(),
                 statvfs_status_code

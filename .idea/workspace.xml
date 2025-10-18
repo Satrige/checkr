@@ -13,7 +13,36 @@
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/factory.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/factory.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/checkers/cpu.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/proc_loadavg.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/proc_loadavg.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/checker.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/disk_usage_adapter.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/proc_self_mounts.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage/infra/proc_self_mounts.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/statvfs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage/infra/statvfs.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/types.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/settings.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage/settings.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/cpu/checker.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/cpu/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/cpu/settings.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/checker.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/settings.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/types.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/disk_usage_adapter.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/proc_self_mounts.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/statvfs.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/types.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/log_level.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infra/proc_loadavg.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/log_level.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/routes/health.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/routes/health.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/server.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,10 +98,15 @@
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/mod.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/proc_loadavg.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/settings.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/disk_usage/infra.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/disk_usage/infra/disk_usage_adapter.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/disk_usage/settings.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/mod.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/ram/proc_meminfo.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/config.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/utils.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/utils/log_level.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/web/server.rs": "true",
     "settings.editor.selected.configurable": "actions.on.save",
     "vue.rearranger.settings.migration": "true"
   }
@@ -108,7 +142,7 @@
       <workItem from="1760159897184" duration="248000" />
       <workItem from="1760269001194" duration="141000" />
       <workItem from="1760327428713" duration="7347000" />
-      <workItem from="1760763051485" duration="4753000" />
+      <workItem from="1760763051485" duration="11901000" />
     </task>
     <servers />
   </component>

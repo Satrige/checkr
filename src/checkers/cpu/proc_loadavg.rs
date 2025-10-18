@@ -1,12 +1,9 @@
+use super::CpuSource;
 use std::fs;
 
 #[derive(thiserror::Error, Debug)]
 #[error("Failed to parse CPU settings: {0}")]
 pub struct CpuParseError(pub String);
-
-pub trait CpuSource: Send + Sync {
-    fn parse_values(&self) -> Result<(f32, f32, f32), CpuParseError>;
-}
 
 pub struct ProcLoadavg;
 
