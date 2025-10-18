@@ -1,8 +1,11 @@
-use super::super::{
-    checker::{CheckResult, CheckStatus, Checker},
-    ports::CpuSource,
-};
-use super::CpuSettings;
+mod config;
+mod proc_loadavg;
+mod settings;
+
+use super::{CheckResult, CheckStatus, Checker};
+pub use config::*;
+use proc_loadavg::CpuSource;
+use settings::CpuSettings;
 
 pub struct CpuChecker<S: CpuSource> {
     settings: CpuSettings,
@@ -76,7 +79,7 @@ impl<S: CpuSource> Checker for CpuChecker<S> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::infra::ParseError;
+    use crate::checkers::cpu::proc_loadavg::CpuParseError;
 
     struct FakeCpuSource {
         one_value: f32,
@@ -95,14 +98,13 @@ mod tests {
     }
 
     impl CpuSource for FakeCpuSource {
-        fn parse_values(&self) -> Result<(f32, f32, f32), ParseError> {
+        fn parse_values(&self) -> Result<(f32, f32, f32), CpuParseError> {
             Ok((self.one_value, self.five_value, self.fifteen_value))
         }
     }
 
     mod cpu_checker {
         use super::*;
-        use crate::config::{CpuConfig, CpuThresholdsConfig};
 
         mod is_warning {
             use super::*;

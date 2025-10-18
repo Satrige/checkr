@@ -1,5 +1,8 @@
-use super::CpuError::WrongCpuSettingsError;
-use super::{CpuConfig, CpuError};
+use super::CpuConfig;
+
+#[derive(thiserror::Error, Debug)]
+#[error("Wrong CPU settings: {0}")]
+pub struct WrongCpuSettingsError(pub String);
 
 pub struct CpuThresholdSettings {
     pub one_threshold: f32,
@@ -34,7 +37,7 @@ impl Default for CpuSettings {
 }
 
 impl TryFrom<&CpuConfig> for CpuSettings {
-    type Error = CpuError;
+    type Error = WrongCpuSettingsError;
 
     fn try_from(cpu_config: &CpuConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
