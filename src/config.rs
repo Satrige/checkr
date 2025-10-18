@@ -1,18 +1,20 @@
+use crate::checkers::cpu::CpuConfig;
+use crate::checkers::disk_usage::DiskUsageConfig;
+use crate::checkers::ram::RamConfig;
+use crate::utils::LogLevel;
 use clap::Parser;
 use serde::Deserialize;
 use serde_json;
 use std::fs;
 
-mod cpu_config;
-mod disk_usage_config;
-mod errors;
-mod ram_config;
+#[derive(thiserror::Error, Debug)]
+pub(crate) enum ConfigError {
+    #[error("Read config error: {0}")]
+    ReadConfigError(String),
 
-use crate::infra::LogLevel;
-pub use cpu_config::*;
-pub use disk_usage_config::*;
-use errors::ConfigError;
-pub use ram_config::*;
+    #[error("Parse config error: {0}")]
+    ParseConfigError(String),
+}
 
 #[derive(Parser, Debug)]
 #[command(name = "checkr")]

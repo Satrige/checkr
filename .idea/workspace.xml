@@ -13,17 +13,13 @@
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/cpu/checker.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/cpu/checker.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/errors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/errors.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/ports.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/ports.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/ram/checker.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/ram/checker.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/disk_usage_adapter.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/disk_usage/disk_usage_adapter.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/proc_self_mounts.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/disk_usage/proc_self_mounts.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/disk_usage/statvfs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/disk_usage/statvfs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/proc_loadavg.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/proc_loadavg.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infra/proc_meminfo.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/infra/proc_meminfo.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/cpu_config.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/disk_usage_config.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/errors.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/ram_config.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/checker.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/disk_usage/checker.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,28 +51,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/checkr-15/tests-for-disk-usage-checker&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/satrige/www/satrige/checkr&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "feature/checkr-15/tests-for-disk-usage-checker",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/satrige/www/satrige/checkr/src/utils",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/checker.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/config.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/mod.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/proc_loadavg.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/cpu/settings.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/mod.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/ram/proc_meminfo.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/config.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/utils/log_level.rs": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
+      <recent name="$PROJECT_DIR$/src/checkers/disk_usage" />
+      <recent name="$PROJECT_DIR$/src/checkers/ram" />
+      <recent name="$PROJECT_DIR$/src/checkers/cpu" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -101,7 +110,8 @@
       <workItem from="1760159864795" duration="26000" />
       <workItem from="1760159897184" duration="248000" />
       <workItem from="1760269001194" duration="141000" />
-      <workItem from="1760327428713" duration="5384000" />
+      <workItem from="1760327428713" duration="7347000" />
+      <workItem from="1760763051485" duration="1558000" />
     </task>
     <servers />
   </component>
