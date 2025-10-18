@@ -96,12 +96,12 @@ MemAvailable:    500 kB
 
                 let result = ProcMeminfo::parse_meminfo(meminfo);
 
-                let err = result.unwrap_err();
-                let inner = err
+                let err = result
+                    .unwrap_err()
                     .downcast::<ProcMeminfoError>()
                     .expect("wrong error type");
 
-                match inner {
+                match err {
                     ProcMeminfoError::ParseError(msg) => assert!(msg.contains("MemTotal")),
                     _ => panic!("Unexpected error type"),
                 }

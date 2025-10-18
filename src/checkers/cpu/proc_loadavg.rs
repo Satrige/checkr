@@ -8,7 +8,7 @@ pub struct CpuParseError(pub String);
 pub struct ProcLoadavg;
 
 impl ProcLoadavg {
-    pub fn parse_loadavg(s: &str) -> Result<(f32, f32, f32), CpuParseError> {
+    pub fn parse_loadavg(s: &str) -> anyhow::Result<(f32, f32, f32)> {
         let mut parts = s.split_whitespace();
         let one = parts
             .next()
@@ -36,7 +36,7 @@ impl ProcLoadavg {
 }
 
 impl CpuSource for ProcLoadavg {
-    fn parse_values(&self) -> Result<(f32, f32, f32), CpuParseError> {
+    fn parse_values(&self) -> anyhow::Result<(f32, f32, f32)> {
         let s = fs::read_to_string("/proc/loadavg").map_err(|e| CpuParseError(e.to_string()))?;
 
         Self::parse_loadavg(&s)
@@ -53,6 +53,17 @@ mod tests {
         mod parse_loadavg {
             use super::*;
 
+            fn downcast_error(err: anyhow::Error, error_message: &str) {
+                let inner = err.downcast::<CpuParseError>().expect("wrong error type");
+
+                match inner {
+                    CpuParseError(msg) => {
+                        assert!(msg.contains(error_message));
+                    }
+                    _ => panic!("Unexpected error type"),
+                }
+            }
+
             #[test]
             fn it_should_parse_the_string() {
                 assert_eq!(
@@ -65,60 +76,42 @@ mod tests {
             fn it_should_miss_1m_value() {
                 let err = ProcLoadavg::parse_loadavg("").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("missing 1m")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "missing 1m");
             }
 
             #[test]
             fn it_should_miss_5m_value() {
                 let err = ProcLoadavg::parse_loadavg("just").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("missing 5m")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "missing 5m");
             }
 
             #[test]
             fn it_should_miss_15m_value() {
                 let err = ProcLoadavg::parse_loadavg("just random").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("missing 15m")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "missing 15m");
             }
 
             #[test]
             fn it_should_not_parse_1m_value() {
                 let err = ProcLoadavg::parse_loadavg("just random string").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("can't parse input")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "can't parse input");
             }
 
             #[test]
             fn it_should_not_parse_5m_value() {
                 let err = ProcLoadavg::parse_loadavg("10 random string").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("can't parse input")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "can't parse input");
             }
 
             #[test]
             fn it_should_not_parse_15m_value() {
                 let err = ProcLoadavg::parse_loadavg("10 15 string").unwrap_err();
 
-                match err {
-                    CpuParseError(msg) => assert!(msg.contains("can't parse input")),
-                    _ => panic!("Unexpected error type"),
-                }
+                downcast_error(err, "can't parse input");
             }
         }
     }
