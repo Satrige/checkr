@@ -13,8 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/settings.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/settings.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/cpu.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +27,9 @@
         <option value="Rust File" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,7 +56,7 @@
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "feature/checkr-15/tests-for-disk-usage-checker",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/satrige/www/satrige/checkr/src/utils",
+    "last_opened_file_path": "/Users/satrige/www/satrige/checkr/src/checkers",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -71,17 +73,17 @@
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/ram/proc_meminfo.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/config.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/utils/log_level.rs": "true",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "actions.on.save",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/checkers" />
       <recent name="$PROJECT_DIR$/src/utils" />
       <recent name="$PROJECT_DIR$/src/checkers/disk_usage" />
       <recent name="$PROJECT_DIR$/src/checkers/ram" />
       <recent name="$PROJECT_DIR$/src/checkers/cpu" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RustProjectSettings">
@@ -106,7 +108,7 @@
       <workItem from="1760159897184" duration="248000" />
       <workItem from="1760269001194" duration="141000" />
       <workItem from="1760327428713" duration="7347000" />
-      <workItem from="1760763051485" duration="2180000" />
+      <workItem from="1760763051485" duration="4753000" />
     </task>
     <servers />
   </component>
