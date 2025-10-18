@@ -1,6 +1,5 @@
-use crate::config::CpuConfig;
-
-use super::super::errors::WrongSettingsError;
+use super::CpuError::WrongCpuSettingsError;
+use super::{CpuConfig, CpuError};
 
 pub struct CpuThresholdSettings {
     pub one_threshold: f32,
@@ -35,7 +34,7 @@ impl Default for CpuSettings {
 }
 
 impl TryFrom<&CpuConfig> for CpuSettings {
-    type Error = WrongSettingsError;
+    type Error = CpuError;
 
     fn try_from(cpu_config: &CpuConfig) -> Result<Self, Self::Error> {
         // The case the check is explicitly disabled
@@ -51,7 +50,7 @@ impl TryFrom<&CpuConfig> for CpuSettings {
 
         // The case the check is explicitly enabled but the thresholds are absent
         if cpu_config.warning.is_none() || cpu_config.critical.is_none() {
-            return Err(WrongSettingsError::WrongCpuSettingsError(
+            return Err(WrongCpuSettingsError(
                 "The thresholds are not specified".into(),
             ));
         }

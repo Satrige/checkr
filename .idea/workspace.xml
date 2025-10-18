@@ -13,13 +13,8 @@
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/cpu_config.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/disk_usage_config.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/errors.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/ram_config.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/disk_usage/checker.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/disk_usage/checker.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/settings.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/settings.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +71,7 @@
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/checkers/ram/proc_meminfo.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/config.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/satrige/www/satrige/checkr/src/utils/log_level.rs": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -111,11 +106,15 @@
       <workItem from="1760159897184" duration="248000" />
       <workItem from="1760269001194" duration="141000" />
       <workItem from="1760327428713" duration="7347000" />
-      <workItem from="1760763051485" duration="1558000" />
+      <workItem from="1760763051485" duration="2180000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
