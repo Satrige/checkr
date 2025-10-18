@@ -13,15 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/factory.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/cpu.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/cpu/proc_loadavg.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/cpu/proc_loadavg.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/routes/health.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/routes/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/server.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +52,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Cargo.Test checkers::cpu::proc_loadavg::tests::proc_loadavg::parse_loadavg::it_should_miss_15m_value.executor": "Debug",
+    "Cargo.Test checkers::disk_usage::tests::error_is_propagated.executor": "Run",
+    "Cargo.Test checkers::disk_usage::tests::filter_by_level_respects_thresholds_and_order.executor": "Run",
+    "Cargo.Test checkers::disk_usage::tests::ok_when_all_below_warning_or_equal_to_warning.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -101,7 +96,7 @@
       <recent name="$PROJECT_DIR$/src/checkers/cpu" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Cargo.Test checkers::disk_usage::tests::ok_when_all_below_warning_or_equal_to_warning">
     <configuration name="Test checkers::cpu::proc_loadavg::tests::proc_loadavg::parse_loadavg::it_should_miss_15m_value" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="buildProfileId" value="test" />
       <option name="command" value="test --package checkr --bin checkr checkers::cpu::proc_loadavg::tests::proc_loadavg::parse_loadavg::it_should_miss_15m_value -- --exact" />
@@ -120,8 +115,62 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test checkers::disk_usage::tests::error_is_propagated" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package checkr --bin checkr checkers::disk_usage::tests::error_is_propagated -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test checkers::disk_usage::tests::filter_by_level_respects_thresholds_and_order" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package checkr --bin checkr checkers::disk_usage::tests::filter_by_level_respects_thresholds_and_order -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test checkers::disk_usage::tests::ok_when_all_below_warning_or_equal_to_warning" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package checkr --bin checkr checkers::disk_usage::tests::ok_when_all_below_warning_or_equal_to_warning -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Test checkers::disk_usage::tests::ok_when_all_below_warning_or_equal_to_warning" />
+        <item itemvalue="Cargo.Test checkers::disk_usage::tests::filter_by_level_respects_thresholds_and_order" />
+        <item itemvalue="Cargo.Test checkers::disk_usage::tests::error_is_propagated" />
         <item itemvalue="Cargo.Test checkers::cpu::proc_loadavg::tests::proc_loadavg::parse_loadavg::it_should_miss_15m_value" />
       </list>
     </recent_temporary>
@@ -148,7 +197,7 @@
       <workItem from="1760159897184" duration="248000" />
       <workItem from="1760269001194" duration="141000" />
       <workItem from="1760327428713" duration="7347000" />
-      <workItem from="1760763051485" duration="16414000" />
+      <workItem from="1760763051485" duration="16966000" />
     </task>
     <servers />
   </component>
