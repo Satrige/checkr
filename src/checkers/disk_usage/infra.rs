@@ -25,6 +25,7 @@ static SKIP_FS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
         "pstore",
         "securityfs",
         "configfs",
+        "fakeowner",
         "bpf",
         "tracefs",
         "debugfs",

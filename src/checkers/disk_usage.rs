@@ -22,7 +22,7 @@ impl<S: DiskUsageSource> DiskUsageChecker<S> {
     pub fn new(settings: DiskUsageSettings, source: S) -> Self {
         DiskUsageChecker {
             settings,
-            name: "infra".to_string(),
+            name: "disk_usage".to_string(),
             source,
         }
     }
