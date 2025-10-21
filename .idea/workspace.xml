@@ -12,10 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="615d1638-d77c-4426-bdd0-a99c70093b35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage/infra.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/checkers/disk_usage/infra/proc_self_mounts.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/disk_usage/infra/proc_self_mounts.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/checkers/allowed_ports.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/checkers/allowed_ports.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +58,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/checkr-17/open-ports-checker&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/satrige/www/satrige/checkr/src/checkers&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -200,7 +197,9 @@
       <workItem from="1760269001194" duration="141000" />
       <workItem from="1760327428713" duration="7347000" />
       <workItem from="1760763051485" duration="16966000" />
-      <workItem from="1760865380736" duration="1068000" />
+      <workItem from="1760865380736" duration="4175000" />
+      <workItem from="1761279527943" duration="599000" />
+      <workItem from="1761482446657" duration="8044000" />
     </task>
     <servers />
   </component>

@@ -144,9 +144,9 @@ mod tests {
     }
 
     #[test]
-    fn name_is_infra() {
+    fn name_is_disk_usage() {
         let checker = DiskUsageChecker::new(settings(true, 75.0, 90.0), FakeDiskSource::default());
-        assert_eq!(checker.get_name(), "infra");
+        assert_eq!(checker.get_name(), "disk_usage");
     }
 
     #[test]

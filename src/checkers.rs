@@ -1,3 +1,4 @@
+pub mod allowed_ports;
 pub mod cpu;
 pub mod disk_usage;
 pub mod ram;
