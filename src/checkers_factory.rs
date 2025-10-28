@@ -1,5 +1,6 @@
 use crate::checkers::{
     Checker,
+    allowed_ports::{AllowedPortsChecker, AllowedPortsSettings, ProcNetSource},
     cpu::{CpuChecker, CpuSettings, ProcLoadavg},
     disk_usage::{DiskUsageChecker, DiskUsageSettings, ProcDiskUsage},
     ram::{ProcMeminfo, RamChecker, RamSettings},
@@ -26,6 +27,14 @@ pub fn build_checkers(config: &AppConfig) -> anyhow::Result<Vec<Arc<dyn Checker 
             ProcDiskUsage,
         );
         result.push(Arc::new(disk_usage_checker) as Arc<dyn Checker + Send + Sync>);
+    }
+
+    if let Some(allowed_ports_config) = &config.allowed_ports {
+        let allowed_ports_checker = AllowedPortsChecker::new(
+            AllowedPortsSettings::try_from(allowed_ports_config)?,
+            ProcNetSource,
+        );
+        result.push(Arc::new(allowed_ports_checker) as Arc<dyn Checker + Send + Sync>);
     }
 
     Ok(result)

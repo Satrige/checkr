@@ -11,6 +11,7 @@ pub enum SelfMountsError {
     ParseError(String),
 }
 
+#[derive(Debug)]
 pub struct MountEntry {
     pub source: String,
     pub target: PathBuf,

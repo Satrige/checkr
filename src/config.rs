@@ -1,4 +1,6 @@
-use crate::checkers::{cpu::CpuConfig, disk_usage::DiskUsageConfig, ram::RamConfig};
+use crate::checkers::{
+    allowed_ports::AllowedPortsConfig, cpu::CpuConfig, disk_usage::DiskUsageConfig, ram::RamConfig,
+};
 use crate::utils::LogLevel;
 use clap::Parser;
 use serde::Deserialize;
@@ -29,6 +31,7 @@ pub struct AppConfig {
     pub cpu: Option<CpuConfig>,
     pub ram: Option<RamConfig>,
     pub disk_usage: Option<DiskUsageConfig>,
+    pub allowed_ports: Option<AllowedPortsConfig>,
 }
 
 impl AppConfig {
