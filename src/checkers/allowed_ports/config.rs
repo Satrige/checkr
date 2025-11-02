@@ -1,7 +1,16 @@
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
+pub struct PortOwnerInfo {
+    pub name: String,
+    pub ports: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct AllowedPortsConfig {
-    pub enabled: Option<bool>,
-    pub ports: Option<Vec<u16>>,
+    #[serde(default)]
+    pub enabled: bool,
+
+    #[serde(default)]
+    pub processes: Vec<PortOwnerInfo>,
 }
