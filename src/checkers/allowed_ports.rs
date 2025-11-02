@@ -28,8 +28,8 @@ impl<S: OpenPortsSource> AllowedPortsChecker<S> {
 
     fn format_response(&self, open_ports: Vec<PortEntry>) -> String {
         open_ports
-            .into_iter()
-            .map(|open_port| open_port.port().to_string())
+            .iter()
+            .map(ToString::to_string)
             .collect::<Vec<String>>()
             .join("; ")
     }

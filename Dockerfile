@@ -1,4 +1,4 @@
-FROM rust:1.90-slim AS builder
+FROM rust:1.91-slim-bookworm AS builder
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
@@ -12,8 +12,8 @@ FROM debian:bookworm-slim AS runtime
 WORKDIR /app
 
 RUN useradd -m -u 10001 appuser \
- && apt-get update && apt-get install -y --no-install-recommends ca-certificates tzdata \
- && rm -rf /var/lib/apt/lists/*
+    && apt-get update && apt-get install -y --no-install-recommends ca-certificates tzdata iproute2 \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/target/release/checkr /usr/local/bin/checkr
 

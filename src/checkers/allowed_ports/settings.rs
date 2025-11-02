@@ -18,11 +18,23 @@ pub struct PortBounds {
     pub max: u16,
 }
 
+trait TrimAll {
+    fn trim_all(&self) -> String;
+}
+
+impl TrimAll for &str {
+    fn trim_all(&self) -> String {
+        self.chars().filter(|c| !c.is_whitespace()).collect()
+    }
+}
+
 impl TryFrom<&str> for PortBounds {
     type Error = WrongAllowedPortsSettingsError;
 
     fn try_from(port_bounds: &str) -> Result<Self, Self::Error> {
-        let parts = port_bounds.trim().split('-').collect::<Vec<&str>>();
+        let trimmed_port_bounds = port_bounds.trim_all();
+        let parts = trimmed_port_bounds.split('-').collect::<Vec<&str>>();
+
         if parts.len() == 1 {
             let port = parts[0].parse::<u16>().map_err(|_| {
                 WrongAllowedPortsSettingsError::InvalidPortValue(port_bounds.to_string())
@@ -78,7 +90,7 @@ impl TryFrom<&AllowedPortsConfig> for AllowedPortsSettings {
                     .iter()
                     .map(|s| PortBounds::try_from(s.as_str()))
                     .collect::<Result<Vec<_>, _>>()?;
-                Ok((process_data.name.clone(), bounds))
+                Ok((process_data.owner.clone(), bounds))
             })
             .collect::<Result<_, _>>()?;
 
