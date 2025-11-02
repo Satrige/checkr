@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct PortOwnerInfo {
-    pub name: String,
+    pub owner: String,
     pub ports: Vec<String>,
 }
 
