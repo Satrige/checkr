@@ -1,0 +1,89 @@
+name: release-binaries
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Glibc (most distros)
+          - target: x86_64-unknown-linux-gnu
+            pkg: ""
+            strip: "strip"
+          # MUSL = mostly-static (very portable)
+          - target: x86_64-unknown-linux-musl
+            pkg: "musl-tools"
+            strip: "strip"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install target deps
+        run: |
+          if [ -n "${{ matrix.pkg }}" ]; then sudo apt-get update && sudo apt-get install -y ${{ matrix.pkg }}; fi
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      # Optional: faster, reproducible linking for MUSL (comment out if unnecessary)
+      # - name: Setup mold/ld (optional)
+      #   run: sudo apt-get install -y mold && echo "RUSTFLAGS='-C link-arg=-fuse-ld=mold'" >> $GITHUB_ENV
+
+      - name: Build (release)
+        env:
+          CARGO_TERM_COLOR: always
+        run: |
+          cargo build --locked --release --target ${{ matrix.target }}
+
+      - name: Strip binary
+        run: |
+          BIN="target/${{ matrix.target }}/release/checkr"
+          if [ -f "$BIN" ]; then ${{ matrix.strip }} "$BIN" || true; fi
+
+      - name: Package
+        run: |
+          BIN="target/${{ matrix.target }}/release/checkr"
+          OUT="checkr-${{ github.ref_name }}-${{ matrix.target }}"
+          mkdir -p dist
+          cp "$BIN" "dist/checkr"
+          # Include README & LICENSE so the tarball is self-explanatory
+          [ -f README.md ] && cp README.md dist/
+          [ -f LICENSE* ] && cp LICENSE* dist/ || true
+          tar -C dist -czf "${OUT}.tar.gz" .
+          rm -rf dist
+          sha256sum "${OUT}.tar.gz" > "${OUT}.sha256"
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            checkr-${{ github.ref_name }}-${{ matrix.target }}.tar.gz
+            checkr-${{ github.ref_name }}-${{ matrix.target }}.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Optional job to publish “nightly” artifacts on every push to main
+  ci-artifacts:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkr-linux-x86_64-gnu
+          path: target/release/checkr
+          retention-days: 14
