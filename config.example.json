@@ -18,5 +18,23 @@
         "enabled": true,
         "warning_threshold": 70,
         "critical_threshold": 80
+    },
+    "disk_usage": {
+        "enabled": true,
+        "warning_threshold": 80,
+        "critical_threshold": 90
+    },
+    "allowed_ports": {
+        "enabled": true,
+        "processes": [
+            {
+                "owner": "nginx",
+                "ports": ["80", "443"]
+            },
+            {
+                "owner": "node",
+                "ports": ["3000-3999"]
+            }
+        ]
     }
 }
