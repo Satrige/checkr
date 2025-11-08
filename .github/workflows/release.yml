@@ -1,5 +1,8 @@
 name: release-binaries
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
